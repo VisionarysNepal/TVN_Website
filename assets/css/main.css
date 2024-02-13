@@ -119,6 +119,35 @@ section {
 }
 
 /*--------------------------------------------------------------
+# Custom
+--------------------------------------------------------------*/
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+section#clients .container-fluid .row {
+  justify-content: center;
+  align-items: center;
+}
+
+.highlight-video {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.highlight-video .description {
+  font-size: 1.5rem;
+}
+
+.highlight-video .description>p:nth-child(2){
+  font-weight: bold;
+}
+/*--------------------------------------------------------------
 # Page Title & Breadcrumbs
 --------------------------------------------------------------*/
 .page-title {
@@ -175,7 +204,7 @@ section {
 }
 
 .header .logo img {
-  max-height: 40px;
+  max-width: 150px;
   margin-right: 6px;
 }
 
