@@ -1388,17 +1388,17 @@ section {
   bottom: 0;
 }
 
-/* Pricing Section - Home Page
+/* Vision Section - Home Page
 ------------------------------*/
-.pricing {
+.vision {
   padding: 60px 0 120px 0;
 }
 
-.pricing .section-title {
+.vision .section-title {
   margin-bottom: 40px;
 }
 
-.pricing .pricing-item {
+.vision .pricing-item {
   box-shadow: 0 3px 20px -2px rgba(var(--default-color-rgb), 0.1);
   padding: 60px 40px;
   height: 100%;
@@ -1406,14 +1406,14 @@ section {
   border-radius: 15px;
 }
 
-.pricing h3 {
+.vision h3 {
   font-weight: 600;
   margin-bottom: 15px;
   font-size: 20px;
   text-align: center;
 }
 
-.pricing .icon {
+.vision .icon {
   margin: 30px auto 20px auto;
   width: 70px;
   height: 70px;
@@ -1426,14 +1426,14 @@ section {
   transform-style: preserve-3d;
 }
 
-.pricing .icon i {
+.vision .icon i {
   color: var(--background-color);
   font-size: 28px;
   transition: ease-in-out 0.3s;
   line-height: 0;
 }
 
-.pricing .icon::before {
+.vision .icon::before {
   position: absolute;
   content: "";
   height: 86px;
@@ -1444,7 +1444,7 @@ section {
   transform: translateZ(-1px);
 }
 
-.pricing .icon::after {
+.vision .icon::after {
   position: absolute;
   content: "";
   height: 102px;
@@ -1455,7 +1455,7 @@ section {
   transform: translateZ(-2px);
 }
 
-.pricing h4 {
+.vision h4 {
   font-size: 48px;
   color: var(--primary-color);
   font-weight: 700;
@@ -1464,17 +1464,17 @@ section {
   text-align: center;
 }
 
-.pricing h4 sup {
+.vision h4 sup {
   font-size: 28px;
 }
 
-.pricing h4 span {
+.vision h4 span {
   color: rgba(var(--default-color-rgb), 0.5);
   font-size: 18px;
   font-weight: 400;
 }
 
-.pricing ul {
+.vision ul {
   padding: 20px 0;
   list-style: none;
   color: rgba(var(--default-color-rgb), 0.8);
@@ -1482,31 +1482,31 @@ section {
   line-height: 20px;
 }
 
-.pricing ul li {
+.vision ul li {
   padding: 10px 0;
   display: flex;
   align-items: center;
 }
 
-.pricing ul i {
+.vision ul i {
   color: #059652;
   font-size: 24px;
   padding-right: 3px;
 }
 
-.pricing ul .na {
+.vision ul .na {
   color: rgba(var(--default-color-rgb), 0.3);
 }
 
-.pricing ul .na i {
+.vision ul .na i {
   color: rgba(var(--default-color-rgb), 0.3);
 }
 
-.pricing ul .na span {
+.vision ul .na span {
   text-decoration: line-through;
 }
 
-.pricing .buy-btn {
+.vision .buy-btn {
   color: rgba(var(--default-color-rgb), 0.8);
   background-color: var(--contrast-color);
   display: inline-block;
@@ -1520,27 +1520,27 @@ section {
   transition: 0.3s;
 }
 
-.pricing .buy-btn:hover {
+.vision .buy-btn:hover {
   background-color: var(--primary-color);
   color: var(--contrast-color);
 }
 
-.pricing .featured {
+.vision .featured {
   z-index: 10;
   border: 3px solid var(--primary-color);
 }
 
-.pricing .featured .buy-btn {
+.vision .featured .buy-btn {
   background-color: var(--primary-color);
   color: var(--contrast-color);
 }
 
-.pricing .featured .buy-btn:hover {
+.vision .featured .buy-btn:hover {
   background-color: rgba(var(--primary-color-rgb), 0.9);
 }
 
 @media (min-width: 992px) {
-  .pricing .featured {
+  .vision .featured {
     transform: scale(1.15);
   }
 }

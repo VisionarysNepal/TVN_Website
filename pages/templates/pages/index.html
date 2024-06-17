@@ -1,5 +1,526 @@
 {% extends "pages/base.html" %}
+{% load static %}
 {% block title %}Home{% endblock %}
 {% block content %}
-<h1>Home Page</h1>
+<main id="main">
+    <section id="hero" class="hero">
+        <img src={% static 'assets/img/hero-bg.jpg' %} alt="" data-aos="fade-in">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10">
+                    <h2 data-aos="fade-up" data-aos-delay="100">Welcome to Our Website</h2>
+                    <p data-aos="fade-up" data-aos-delay="200">We, as motivated youths, in a journey to empower other competent
+                    youths through education, industry
+                    connections, innovation, and community outreach, ensuring lasting impact and inclusivity.
+                    </p>
+                </div>
+                <div class="col-lg-5">
+                    <form
+                        action="https://docs.google.com/forms/d/e/1FAIpQLScttKXrm6n808CS-byunGqyifNnLFpMLzphJpxZSxT8EknHoA/viewform?usp=sf_link"
+                        method="get" class="sign-up-form d-flex" data-aos="fade-up" data-aos-delay="300">
+                        <input type="text" class="form-control" placeholder="Enter email address">
+                        <input type="submit" class="btn btn-primary" value="Sign up" />
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section id="clients" class="clients">
+        <div class="container-fluid" data-aos="fade-up">
+            <div class="row gy-4">
+                {% for collab in collabs %}
+                <div class="col-xl-2 col-md-3 col-6 client-logo">
+                    <img src={{collab.image.url}} class="img-fluid" alt="">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <div class="row align-items-xl-center gy-5">
+                <div class="col-xl-5 content">
+                    <h3>About Us</h3>
+                    <h2>We are the team of Dediated individuals</h2>
+                    <We, a dedicated team in Nepal, are committed to advancing tech welfare and industry awareness. Our
+                    visionaries aim for positive change, shaping a brighter, informed future for all.>
+                    </p>
+                    <a href="#" class="read-more"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
+                </div>
+
+                <div class="col-xl-7">
+                    <div class="row gy-4 icon-boxes">
+                        {% for feature in features  %}
+                            <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+                                <div class="icon-box">
+                                    <i class="{{feature.icon}}"></i>
+                                    <h3>{{feature.title}}</h3>
+                                    <p>
+                                    {{feature.content}}
+                                    </p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="services">
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Programs</h2>
+            <p>Our programs are meticulously crafted to empower the youth with the knowledge, skills, and perspectives
+            needed to thrive in an ever-evolving world.</p>
+        </div>
+
+        <div class="container">
+            <div class="row gy-4">
+                {% for program in programs  %}
+                    <div class="col-lg-6 " data-aos="fade-up" data-aos-delay="100">
+                        <div class="service-item d-flex">
+                            <div class="icon flex-shrink-0"><i class="{{program.icon}}"></i></div>
+                            <div>
+                                <h4 class="title"><a href="#" class="stretched-link">{{program.title}}</a></h4>
+                                <p class="description">{{program.content}}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Features</h2>
+            <p> The Visionarys Nepal's features encapsulate a commitment to holistic education, community building, and
+            adaptability in the realms of cybersecurity and technology.</p>
+        </div>
+        <div class="container">
+            <div class="row gy-4 align-items-center features-item">
+                <div class="col-lg-5 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
+                    <h3>Hands-On Learning</h3>
+                    <p>
+                    Experience hands-on learning through practical exercises and real-world projects, allowing you to apply
+                    theoretical knowledge to solve real challenges
+                    </p>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLScmpMB42pBP4IoAUgCsFOpCxNge3X4wZXqVjPJyyvzFlGNoww/viewform?usp=sf_link" class="btn btn-get-started">Get Started</a>
+                </div>
+                <div class="col-lg-7 order-1 order-lg-2 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="100">
+                    <div class="image-stack">
+                        <img src={% static "assets/img/features-light-1.jpg" %} alt="" class="stack-front">
+                        <img src={% static "assets/img/features-light-2.jpg" %} alt="" class="stack-back">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row gy-4 align-items-stretch justify-content-between features-item ">
+                <div class="col-lg-6 d-flex align-items-center features-img-bg" data-aos="zoom-out">
+                    <img src={% static "assets/img/features-light-3.jpg" %} class="img-fluid" alt="">
+                </div>
+                <div class="col-lg-5 d-flex justify-content-center flex-column" data-aos="fade-up">
+                    <h3>Event Calendar</h3>
+                    <p>Stay updated and plan your learning journey with our comprehensive event calendar. It includes details
+                    about upcoming workshops, webinars, and networking sessions. The calendar ensures that you have easy
+                    access to information about all scheduled events</p>
+                    <ul>
+                        <li><i class="bi bi-check"></i> <span>Helps People Stay Informed.</span></li>
+                        <li><i class="bi bi-check"></i><span> Provides Clear Event Details</span></li>
+                        <li><i class="bi bi-check"></i> <span>Makes Finding Events Simple</span>.</li>
+                    </ul>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLScmpMB42pBP4IoAUgCsFOpCxNge3X4wZXqVjPJyyvzFlGNoww/viewform?usp=sf_link" class="btn btn-get-started align-self-start">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio" class="portfolio">
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Highlights</h2>
+            <p>These highlights showcase our commitment to excellence, inclusivity, and adaptability, making YEAS a beacon
+            for positive change in the lives of the youth and the communities we serve.</p>
+        </div>
+        <div class="container">
+            <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+                <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
+                    <li data-filter="*" class="filter-active">All</li>
+
+                    {% for event in events %}
+                        <li data-filter=".filter-{{event.location|lower}}">{{event.location}}</li>
+                    {% endfor %}
+                </ul>
+                <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+                    {% for highlight in highlights %}
+                    <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-{{highlight.event.location|lower}}">
+                        <img src="{{highlight.image.url}}" class="img-fluid" alt="">
+                            <div class="portfolio-info">
+                                <h4>{{highlight.title}}</h4>
+                                <p>{{highlight.event.title}}</p>
+                                <a href="{{highlight.image.url}}"</a>
+                                <a href="portfolio-details.html" title="More Details" class="details-link"><i
+                                        class="bi bi-link-45deg"></i></a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+    </section>
+
+    <section id="vision" class="vision">
+        <div class="container section-title" data-aos="fade-up">
+            <h2>The Vision</h2>
+            <p>In the world of bits and bytes, we're building a community of endless possibilities. Welcome to The Visionarys Nepal.</p>
+        </div>
+    </section>
+
+    <section id="faq" class="faq">
+        <div class="container">
+            <div class="row gy-4">
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="content px-xl-5">
+                        <h3><span>Frequently Asked </span><strong>Questions</strong></h3>
+                        <p>
+                        These are the frequently asked questions that The Visionarys Nepal often receives, providing valuable
+                        insights into various aspects of the organization
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
+                    <div class="faq-container">
+                        <div class="faq-item faq-active">
+                            <h3><span class="num">1.</span> <span>What is the mission of The Visionarys Nepal?</span></h3>
+                            <div class="faq-content">
+                                <p>The Visionarys Nepal is dedicated to empowering and enlightening the youth by addressing various
+                                aspects of personal development, awareness, and societal issues.</p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div>
+
+                        <div class="faq-item">
+                            <h3><span class="num">2.</span> <span>How can I become a member of The Visionarys Nepal?</span></h3>
+                            <div class="faq-content">
+                                <p>Membership in The Visionarys Nepal is open to all youth who share a passion for personal
+                                development and community service. You can join by participating in our events and reaching out to
+                                our leadership team.</p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div>
+
+                        <div class="faq-item">
+                            <h3><span class="num">3.</span> <span>Is The Visionarys Nepal only focused on academic
+                                    development?</span></h3>
+                            <div class="faq-content">
+                                <p>No, The Visionarys Nepal takes a holistic approach, addressing not only academic needs but also
+                                mental health, career guidance, and social awareness to create well-rounded individuals.</p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div>
+
+                        <div class="faq-item">
+                            <h3><span class="num">4.</span> <span>How does The Visionarys Nepal assess the impact of its
+                                    programs?</span></h3>
+                            <div class="faq-content">
+                                <p>The Visionarys Nepal uses a data-driven approach, collecting feedback from participants and
+                                tracking their progress over time to measure the impact of its programs.</p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div>
+
+                        <div class="faq-item">
+                            <h3><span class="num">5.</span> <span>What types of programs does The Visionarys Nepal
+                                    organize?</span></h3>
+                            <div class="faq-content">
+                                <p>The Visionarys Nepal organizes a range of programs, including mental health awareness, career
+                                guidance, financial literacy, social issue discussions, tutoring programs, and community
+                                engagement initiatives.</p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="team" class="team">
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Team</h2>
+            <p>The Visionarys Nepal team is a tight-knit group of tech enthusiasts who share a deep passion for
+            cybersecurity and technology, combining their diverse experiences to make learning accessible and engaging
+            for all.</p>
+        </div>
+
+        <div class="container">
+            <div class="row gy-5">
+                {% for key,value in members.items %}
+                    <div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="100">
+                        <div class="member-img">
+                            <img src="{{value.member.profile_img.url}}" class="img-fluid" alt="">
+                            <div class="social">
+                                {% for link in value.social_links %}
+                                    <a href="{{link.link_url}}"><i class="{{link.icon.icon}}"></i></a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="member-info text-center">
+                            <h4>{{value.member.name}}</h4>
+                            <span>{{value.member.designation}}</span>
+                            <p>{{value.member.description}}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section id="call-to-action" class="call-to-action">
+
+        <img src="assets/img/cta-bg.jpg" alt="">
+
+        <div class="container">
+            <div class="row justify-content-center" data-aos="zoom-in" data-aos-delay="100">
+                <div class="col-xl-10">
+                    <div class="text-center">
+                        <h3>Call To Action</h3>
+                        <p>Join The Visionarys Nepal! Embrace your passion for cybersecurity and technology. Be part of a
+                        dynamic community, shaping the future together. Become a member now!</p>
+                        <a class="cta-btn" href="https://docs.google.com/forms/d/e/1FAIpQLScmpMB42pBP4IoAUgCsFOpCxNge3X4wZXqVjPJyyvzFlGNoww/viewform?usp=sf_link" target="_blank">Call To Action</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5 info" data-aos="fade-up" data-aos-delay="100">
+                    <h3>Voices of Our Community</h3>
+                    <p>
+                    In the vibrant tapestry of The Visionarys Nepal, members weave together a narrative of shared passion
+                    and collective growth. Hear directly from our community
+                    </p>
+                </div>
+
+                <div class="col-lg-7" data-aos="fade-up" data-aos-delay="200">
+                    <div class="swiper">
+                        <template class="swiper-config">
+                            {
+                            "loop": true,
+                            "speed" : 600,
+                            "autoplay": {
+                            "delay": 5000
+                            },
+                            "slidesPerView": "auto",
+                            "pagination": {
+                            "el": ".swiper-pagination",
+                            "type": "bullets",
+                            "clickable": true
+                            }
+                            }
+                        </template>
+                                <div class="swiper-wrapper">
+                                    {% for feedback in feedbacks %}
+                                        <div class="swiper-slide">
+                                            <div class="testimonial-item">
+                                                <div class="d-flex">
+                                                    <img src="{{feedback.profile_img.url}}" class="testimonial-img flex-shrink-0"
+                                                    alt="">
+                                                    <div>
+                                                        <h3>{{feedback.name}}</h3>
+                                                        <h4>{{feedback.title}}</h4>
+                                                    </div>
+                                                </div>
+                                                <p>
+                                                <i class="bi bi-quote quote-icon-left"></i>
+                                                <span>{{feedback.quote}}</span>
+                                                <i class="bi bi-quote quote-icon-right"></i>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="blogs" class="recent-posts">
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Recent Posts</h2>
+            <p>Stay updated with the latest insights, events, and news from The Visionarys Nepal community.</p>
+        </div>
+        <div class="container">
+            <div class="row gy-4">
+                <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <article>
+                        <div class="post-img">
+                            <img src="assets/img/blog/blog-1.jpg" alt="" class="img-fluid">
+                        </div>
+
+                        <p class="post-category">Nature and her.</p>
+
+                        <h2 class="title">
+                            <a href="https://mediwritestheunspoken.blogspot.com/2023/12/i-was-craving-rain-that-night.html"> I was
+                                craving rain that night.</a>
+                        </h2>
+
+                        <div class="d-flex align-items-center">
+                            <img src="assets/img/blog/blog-author.jpg" alt="" class="img-fluid post-author-img flex-shrink-0">
+                            <div class="post-meta">
+                                <p class="post-author">Medinee Aryal</p>
+                                <p class="post-date">
+                                <time datetime="2023-12-30">30 December 2023</time>
+                                </p>
+                            </div>
+                        </div>
+
+                    </article>
+                </div><!-- End post list item -->
+
+                <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <article>
+
+                        <div class="post-img">
+                            <img src="assets/img/blog/blog-2.jpg" alt="" class="img-fluid">
+                        </div>
+
+                        <p class="post-category">3 PM Thoughts</p>
+
+                        <h2 class="title">
+                            <a href="https://mediwritestheunspoken.blogspot.com/2023/06/caged.html">Caged</a>
+                        </h2>
+
+                        <div class="d-flex align-items-center">
+                            <img src="assets/img/blog/blog-author-2.jpg" alt="" class="img-fluid post-author-img flex-shrink-0">
+                            <div class="post-meta">
+                                <p class="post-author">Medinee Aryal</p>
+                                <p class="post-date">
+                                <time datetime="2023-06-04">4 June 2023</time>
+                                </p>
+                            </div>
+                        </div>
+
+                    </article>
+                </div><!-- End post list item -->
+
+                <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <article>
+
+                        <div class="post-img">
+                            <img src="assets/img/blog/blog-3.jpg" alt="" class="img-fluid">
+                        </div>
+
+                        <p class="post-category">Night</p>
+
+                        <h2 class="title">
+                            <a href="https://mediwritestheunspoken.blogspot.com/2023/06/rainy-life.html">Rainy life?</a>
+                        </h2>
+
+                        <div class="d-flex align-items-center">
+                            <img src="assets/img/blog/blog-author-3.jpg" alt="" class="img-fluid post-author-img flex-shrink-0">
+                            <div class="post-meta">
+                                <p class="post-author">Medinee Aryal</p>
+                                <p class="post-date">
+                                <time datetime="2023-06-13">13 June 2023</time>
+                                </p>
+                            </div>
+                        </div>
+
+                    </article>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Contact</h2>
+            <p>Have questions, suggestions, or just eager to be part of The Visionarys Nepal? Reach out to us! We're here
+            to chat and welcome your insights.</p>
+        </div>
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <div class="row gy-4">
+                <div class="col-lg-6">
+                    <div class="row gy-4">
+                        <div class="col-md-6">
+                            <div class="info-item" data-aos="fade" data-aos-delay="200">
+                                <i class="bi bi-geo-alt"></i>
+                                <h3>Address</h3>
+                                <p>SeshmatiPul, Balaju, Tarkeshwor, Bagmati</p>
+                                <p>Nepal</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-item" data-aos="fade" data-aos-delay="300">
+                                <i class="bi bi-telephone"></i>
+                                <h3>Call Us</h3>
+                                <p>+977 9761849725</p>
+                                <p>+977 9823558350</p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="info-item" data-aos="fade" data-aos-delay="400">
+                                <i class="bi bi-envelope"></i>
+                                <h3>Email Us</h3>
+                                <p>thevisionarynepal@gmail.com</p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="info-item" data-aos="fade" data-aos-delay="500">
+                                <i class="bi bi-clock"></i>
+                                <h3>Open Hours</h3>
+                                <p>Sunday - Friday</p>
+                                <p>9:00AM - 05:00PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <form action="/" method="post" class="php-email-form" data-aos="fade-up"
+                        data-aos-delay="200">
+                        {% csrf_token %}
+                        <div class="row gy-4">
+                            <div class="col-md-6">
+                                {{contact_form.name}}
+                            </div>
+
+                            <div class="col-md-6 ">
+                                {{contact_form.email}}
+                            </div>
+
+                            <div class="col-md-12">
+                                {{contact_form.subject}}
+                            </div>
+
+                            <div class="col-md-12">
+                                {{contact_form.message}}
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <div class="loading">Loading</div>
+                                <div class="error-message"></div>
+                                <div class="sent-message">Your message has been sent. Thank you!</div>
+                                <button type="submit">Send Message</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
 {% endblock %}

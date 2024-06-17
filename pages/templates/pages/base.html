@@ -37,19 +37,19 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="container-fluid d-flex align-items-center justify-content-between">
 
-      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+      <a href={% url 'home' %} class="logo d-flex align-items-center me-auto me-xl-0">
           <img src={% static "assets/img/Logo.png" %} alt="">
       </a>
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="index.html#hero" class="active">Home</a></li>
-          <li><a href="index.html#about">About</a></li>
-          <li><a href="index.html#services">Programs</a></li>
-          <li><a href="index.html#portfolio">Our Portfolio</a></li>
-          <li><a href="index.html#team">Team</a></li>
-          <li><a href="index.html#blogs">Blog</a></li>
-          <li><a href="index.html#contact">Contact</a></li>
+          <li><a href="{% url 'home' %}" class="active">Home</a></li>
+          <li><a href="{% url 'home' %}#about">About</a></li>
+          <li><a href="#services">Programs</a></li>
+          <li><a href="#portfolio">Our Portfolio</a></li>
+          <li><a href="#team">Team</a></li>
+          <li><a href="#blogs">Blog</a></li>
+          <li><a href="#contact">Contact</a></li>
         </ul>
 
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
@@ -82,22 +82,13 @@
         <div class="col-lg-2 col-6 footer-links">
           <h4>Useful Links</h4>
           <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About us</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">Terms of service</a></li>
-            <li><a href="#">Privacy policy</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-2 col-6 footer-links">
-          <h4>Our Departments</h4>
-          <ul>
-            <li><a href="#">Event Planning Department</a></li>
-            <li><a href="#">Public Relations Department</a></li>
-            <li><a href="#">Membership and Community Department</a></li>
-            <li><a href="#">Innovation and Research Department</a></li>
-            <li><a href="#">Design and Media Department</a></li>
+              <li><a href="{% url 'home' %}" class="active">Home</a></li>
+              <li><a href="{% url 'home' %}#about">About</a></li>
+              <li><a href="#services">Programs</a></li>
+              <li><a href="#portfolio">Our Portfolio</a></li>
+              <li><a href="#team">Team</a></li>
+              <li><a href="#blogs">Blog</a></li>
+              <li><a href="#contact">Contact</a></li>
           </ul>
         </div>
 
