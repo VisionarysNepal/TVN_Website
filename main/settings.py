@@ -14,7 +14,6 @@ import os
 import django_heroku
 from pathlib import Path
 
-django_heroku.settings(locals())
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-(o3qoc2nq)0b*k)b^h@o%(vmkifk#qfm#!hj^ge)i9q#=0drfh'
+#SECRET_KEY = 'django-insecure-(o3qoc2nq)0b*k)b^h@o%(vmkifk#qfm#!hj^ge)i9q#=0drfh'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -127,7 +126,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -138,4 +137,4 @@ MEDIA_DIR = BASE_DIR / 'media'
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+django_heroku.settings(locals())
