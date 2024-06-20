@@ -21,13 +21,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-SECRET_KEY="+z+Jnz6coaP0uyCni7zkn4L100votvu36f5rr4b/DN4="
+SECRET_KEY=os.getenv("SECRET_KEY", "+z+Jnz6coaP0uyCni7zkn4L100votvu36f5rr4b/DN4=")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("IS_DEVELOPMENT", True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [os.getenv("APP_HOST"), "127.0.0.1"]
 STATIC_URL = "static/"
 
 
@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'pages.apps.PagesConfig'
+    'pages.apps.PagesConfig',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -135,8 +136,17 @@ MEDIA_URL = '/media/'
 django_heroku.settings(locals())
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+DEFAULT_FILE_STORAGE = os.getenv("DEFAULT_FILE_STORAGE")
+STATICFILES_STORAGE = os.getenv("STATICFILES_STORAGE")
+
+AWS_S3_ACCESS_KEY_ID=os.getenv("AWS_S3_ACCESS_KEY_ID")
+AWS_S3_SECRET_ACCESS_KEY=os.getenv("AWS_S3_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME=os.getenv("AWS_STORAGE_BUCKET_NAME")
+AWS_QUERYSTRING_AUTH=os.getenv("AWS_QUERYSTRING_AUTH")
