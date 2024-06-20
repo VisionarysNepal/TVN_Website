@@ -13,7 +13,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 import django_heroku
 from pathlib import Path
+from dotenv import load_dotenv
 
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,7 +30,6 @@ SECRET_KEY=os.getenv("SECRET_KEY", "+z+Jnz6coaP0uyCni7zkn4L100votvu36f5rr4b/DN4=
 DEBUG = os.getenv("IS_DEVELOPMENT", True)
 
 ALLOWED_HOSTS = [os.getenv("APP_HOST"), "127.0.0.1"]
-STATIC_URL = "static/"
 
 
 # Application definition
@@ -123,6 +124,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -144,3 +148,4 @@ AWS_S3_ACCESS_KEY_ID=os.getenv("AWS_S3_ACCESS_KEY_ID")
 AWS_S3_SECRET_ACCESS_KEY=os.getenv("AWS_S3_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME=os.getenv("AWS_STORAGE_BUCKET_NAME")
 AWS_QUERYSTRING_AUTH=os.getenv("AWS_QUERYSTRING_AUTH")
+
