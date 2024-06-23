@@ -29,6 +29,10 @@
 
     <section id="clients" class="clients">
         <div class="container-fluid" data-aos="fade-up">
+            <div class="container section-title" data-aos="fade-up">
+                <h2>Collabs</h2>
+                <p>Our Collaborations</p>
+            </div>
             <div class="row gy-4">
                 {% for collab in collabs %}
                 <div class="col-xl-2 col-md-3 col-6 client-logo">
@@ -53,13 +57,13 @@
 
                 <div class="col-xl-7">
                     <div class="row gy-4 icon-boxes">
-                        {% for feature in features  %}
+                        {% for goal in goals %}
                             <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
                                 <div class="icon-box">
-                                    <i class="{{feature.icon}}"></i>
-                                    <h3>{{feature.title}}</h3>
+                                    <i class="{{goal.icon}}"></i>
+                                    <h3>{{goal.title}}</h3>
                                     <p>
-                                    {{feature.content}}
+                                    {{goal.content}}
                                     </p>
                                 </div>
                             </div>
@@ -411,7 +415,7 @@
                         </div>
 
                     </article>
-                </div><!-- End post list item -->
+                </div>
 
                 <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
                     <article>

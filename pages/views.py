@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import Collab,Feature,Program,Highlight,Event,Member,SocialLink,SocialIcon,Feedback,Contact
+from .models import Collab,Goal,Program,Highlight,Event,Member,SocialLink,SocialIcon,Feedback,Contact
 from .forms import ContactForm
 
 # Create your views here.
@@ -7,7 +7,7 @@ def home(request):
     context = {}
 
     collabs = Collab.objects.all()
-    features = Feature.objects.all()
+    goals = Goal.objects.all()
     programs = Program.objects.all()
     events = Event.objects.all()
     highlights = Highlight.objects.all()
@@ -34,7 +34,7 @@ def home(request):
 
     context = {
         "collabs" : collabs,
-        "features" : features,
+        "goals" : goals,
         "programs" : programs,
         "events" : events,
         "highlights" : highlights,

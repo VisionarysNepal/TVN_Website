@@ -8,7 +8,7 @@ class Collab(models.Model):
     def __str__(self):
         return f"{self.title}"
 
-class Feature(models.Model):
+class Goal(models.Model):
     title = models.CharField(max_length=255)
     icon = models.CharField(max_length=255)
     content = models.TextField()
