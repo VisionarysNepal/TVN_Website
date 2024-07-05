@@ -152,7 +152,7 @@ MEDIA_DIR = BASE_DIR / 'media'
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
 
-#django_heroku.settings(locals())
+django_heroku.settings(locals())
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
