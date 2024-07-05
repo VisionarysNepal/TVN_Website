@@ -46,6 +46,58 @@
   scroll-behavior: smooth;
 }
 
+/* PHP Email Form Messages
+------------------------------*/
+.php-email-form .error-message {
+  display: none;
+  background: #df1529;
+  color: #ffffff;
+  text-align: left;
+  padding: 15px;
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+.php-email-form .sent-message {
+  display: none;
+  color: #ffffff;
+  background: #059652;
+  text-align: center;
+  padding: 15px;
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+.php-email-form .loading {
+  display: none;
+  background: var(--surface-color);
+  text-align: center;
+  padding: 15px;
+  margin-bottom: 24px;
+}
+
+.php-email-form .loading:before {
+  content: "";
+  display: inline-block;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  margin: 0 10px -6px 0;
+  border: 3px solid var(--accent-color);
+  border-top-color: var(--surface-color);
+  animation: php-email-form-loading 1s linear infinite;
+}
+
+@keyframes php-email-form-loading {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
@@ -877,11 +929,14 @@ section {
 }
 
 .hero .sign-up-form {
-  margin-top: 20px;
-  padding: 10px;
-  border-radius: 7px;
-  background: #fff;
-  box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 7px;
+    background:
+    color-mix(in srgb, var(--default-color) 5%, white 90%);
+    box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.1);
+    display: flex;
 }
 
 .hero .sign-up-form .form-control {
@@ -895,7 +950,8 @@ section {
 }
 
 .hero .sign-up-form input[type=submit] {
-  box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: none;
+  border: 0;
   background-color: var(--primary-color);
   border-color: var(--primary-color);
   padding: 8px 20px 10px 20px;
@@ -919,10 +975,6 @@ section {
 
 /* Clients Section - Home Page
 ------------------------------*/
-.clients {
-  padding: 10px 0;
-}
-
 .clients .client-logo {
   display: flex;
   justify-content: center;
@@ -1913,6 +1965,7 @@ section {
   max-height: 240px;
   margin: -30px -30px 15px -30px;
   overflow: hidden;
+  height: 100%;
 }
 
 .recent-posts .post-category {
@@ -2827,13 +2880,14 @@ section {
   margin-bottom: 2px;
 }
 
-.blog-details .comments .comment h5 a {
+.bold {
   font-weight: bold;
   color: var(--default-color);
   transition: 0.3s;
+  cursor: default;
 }
 
-.blog-details .comments .comment h5 a:hover {
+.bold:hover {
   color: var(--primary-color);
 }
 

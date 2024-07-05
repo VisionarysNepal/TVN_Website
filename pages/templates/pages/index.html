@@ -1,26 +1,66 @@
 {% extends "pages/base.html" %}
 {% load static %}
+{% load tz %}
 {% block title %}Home{% endblock %}
+
 {% block content %}
+<style>
+.hero .sign-up-form input[type=email]{
+    background-color: transparent;
+    border: 0;
+    padding: 4px 10px;
+    width: 100%;
+
+}
+    .img-fluid {
+        height: 100%;
+        width: 100%;
+        object-position: top;
+        object-fit: cover;
+    }
+</style>
+
 <main id="main">
     <section id="hero" class="hero">
         <img src={% static 'assets/img/hero-bg.jpg' %} alt="" data-aos="fade-in">
         <div class="container">
             <div class="row">
                 <div class="col-lg-10">
-                    <h2 data-aos="fade-up" data-aos-delay="100">Welcome to Our Website</h2>
-                    <p data-aos="fade-up" data-aos-delay="200">We, as motivated youths, in a journey to empower other competent
-                    youths through education, industry
-                    connections, innovation, and community outreach, ensuring lasting impact and inclusivity.
-                    </p>
+                    {% if meta.title %}
+                        <h2 data-aos="fade-up" data-aos-delay="100">{{meta.title}}</h2>
+                    {% else %}
+                        <h2 data-aos="fade-up" data-aos-delay="100">Welcome to Our Website</h2>
+                    {% endif %}
+
+                    {% if meta.description %}
+                        <p data-aos="fade-up" data-aos-delay="200">
+                        {{meta.description}}
+                        </p>
+                    {% else %}
+                        <p data-aos="fade-up" data-aos-delay="200">
+                        We, as motivated youths, in a journey to empower other competent youths through education, industry connections, innovation, and community outreach, ensuring lasting impact and inclusivity.
+                        </p>
+                    {% endif %}
                 </div>
-                <div class="col-lg-5">
-                    <form
-                        action="https://docs.google.com/forms/d/e/1FAIpQLScttKXrm6n808CS-byunGqyifNnLFpMLzphJpxZSxT8EknHoA/viewform?usp=sf_link"
-                        method="get" class="sign-up-form d-flex" data-aos="fade-up" data-aos-delay="300">
-                        <input type="text" class="form-control" placeholder="Enter email address">
-                        <input type="submit" class="btn btn-primary" value="Sign up" />
+                <div class="col-lg-5 aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
+                    {% if request.session.is_subscribed == None %}
+                    <form action="#" method="post" class="php-email-form">
+                        {% csrf_token %}
+                        <div class="sign-up-form">
+                            {{subscribe_form.email}}
+                            <input name="newsletter" type="hidden" value="newsletter" />
+                            <input type="submit" value="Subscribe">
+                        </div>
+                        <div class="loading">Loading</div>
+                        <div class="error-message"></div>
+
+                        {% if subscribe_message %}
+                        <div class="sent-message" style="display:block">
+                            Your subscription request has been sent. Thank you!
+                        </div>
+                        {% endif %}
                     </form>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -52,7 +92,6 @@
                     <We, a dedicated team in Nepal, are committed to advancing tech welfare and industry awareness. Our
                     visionaries aim for positive change, shaping a brighter, informed future for all.>
                     </p>
-                    <a href="#" class="read-more"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
                 </div>
 
                 <div class="col-xl-7">
@@ -106,40 +145,45 @@
             adaptability in the realms of cybersecurity and technology.</p>
         </div>
         <div class="container">
-            <div class="row gy-4 align-items-center features-item">
-                <div class="col-lg-5 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
-                    <h3>Hands-On Learning</h3>
-                    <p>
-                    Experience hands-on learning through practical exercises and real-world projects, allowing you to apply
-                    theoretical knowledge to solve real challenges
-                    </p>
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLScmpMB42pBP4IoAUgCsFOpCxNge3X4wZXqVjPJyyvzFlGNoww/viewform?usp=sf_link" class="btn btn-get-started">Get Started</a>
-                </div>
-                <div class="col-lg-7 order-1 order-lg-2 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="100">
-                    <div class="image-stack">
-                        <img src={% static "assets/img/features-light-1.jpg" %} alt="" class="stack-front">
-                        <img src={% static "assets/img/features-light-2.jpg" %} alt="" class="stack-back">
+            {% for key,value in feature_images.items %}
+                {% if value.images|length > 1 %}
+                    <div class="row gy-4 align-items-center features-item">
+                        <div class="col-lg-5 order-2 order-lg-1 aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+                            <h3>{{value.feature.title}}</h3>
+                            <p>
+                            {{value.feature.description}}
+                            </p>
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLScmpMB42pBP4IoAUgCsFOpCxNge3X4wZXqVjPJyyvzFlGNoww/viewform?usp=sf_link" class="btn btn-get-started">Get Started</a>
+                        </div>
+                        <div class="col-lg-7 order-1 order-lg-2 d-flex align-items-center aos-init aos-animate" data-aos="zoom-out" data-aos-delay="100">
+                            <div class="image-stack">
+                                <img src="{{value.images.0.image.url}}" alt="" class="stack-front">
+                                <img src="{{value.images.1.image.url}}" alt="" class="stack-back">
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                {% endif %}
+                {% if value.images|length < 2 %}
+                    <div class="row gy-4 align-items-stretch justify-content-between features-item ">
+                        {% for image in value.images %}
+                            <div class="col-lg-6 d-flex align-items-center features-img-bg aos-init aos-animate" data-aos="zoom-out">
+                                <img src="{{image.image.url}}" style="object-position: unset" class="img-fluid" alt="{{image.title}}">
+                            </div>
+                        {% endfor %}
 
-            <div class="row gy-4 align-items-stretch justify-content-between features-item ">
-                <div class="col-lg-6 d-flex align-items-center features-img-bg" data-aos="zoom-out">
-                    <img src={% static "assets/img/features-light-3.jpg" %} class="img-fluid" alt="">
-                </div>
-                <div class="col-lg-5 d-flex justify-content-center flex-column" data-aos="fade-up">
-                    <h3>Event Calendar</h3>
-                    <p>Stay updated and plan your learning journey with our comprehensive event calendar. It includes details
-                    about upcoming workshops, webinars, and networking sessions. The calendar ensures that you have easy
-                    access to information about all scheduled events</p>
-                    <ul>
-                        <li><i class="bi bi-check"></i> <span>Helps People Stay Informed.</span></li>
-                        <li><i class="bi bi-check"></i><span> Provides Clear Event Details</span></li>
-                        <li><i class="bi bi-check"></i> <span>Makes Finding Events Simple</span>.</li>
-                    </ul>
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLScmpMB42pBP4IoAUgCsFOpCxNge3X4wZXqVjPJyyvzFlGNoww/viewform?usp=sf_link" class="btn btn-get-started align-self-start">Get Started</a>
-                </div>
-            </div>
+                        <div class="col-lg-5 d-flex justify-content-center flex-column aos-init aos-animate" data-aos="fade-up">
+                            <h3>{{value.feature.title}}</h3>
+                            <p>{{value.feature.description}}</p>
+                            <ul>
+                                <li><i class="bi bi-check"></i> <span>Helps People Stay Informed.</span></li>
+                                <li><i class="bi bi-check"></i><span> Provides Clear Event Details</span></li>
+                                <li><i class="bi bi-check"></i> <span>Makes Finding Events Simple</span>.</li>
+                            </ul>
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLScmpMB42pBP4IoAUgCsFOpCxNge3X4wZXqVjPJyyvzFlGNoww/viewform?usp=sf_link" class="btn btn-get-started align-self-start">Get Started</a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
         </div>
     </section>
 
@@ -360,88 +404,72 @@
 
     <section id="blogs" class="recent-posts">
         <div class="container section-title" data-aos="fade-up">
+            <h2>Top Posts</h2>
+            <p>Here are the most viewd posts of The Visionarys Nepal.</p>
+        </div>
+        <div class="container">
+            <div class="row gy-4">
+                {% for blog in top_blogs %}
+                    <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                        <article>
+                            <div class="post-img">
+                                <img src="{{blog.image.url}}" alt="{{blog.title}}" class="img-fluid">
+                            </div>
+
+                            <p class="post-category">{{blog.category.name}}</p>
+
+                            <h2 class="title">
+                                <a href="{% url "post_page" blog.slug %}">{{blog.title}}</a>
+                            </h2>
+
+                            <div class="d-flex align-items-center">
+                                <img src="{{blog.author.profile.profile_image.url}}" alt="" class="img-fluid post-author-img flex-shrink-0">
+                                <div class="post-meta">
+                                    <a href="{% url 'author' blog.author.profile.slug %}" class="post-author">{{blog.author.first_name}} {{blog.author.last_name}}</a>
+                                    <p class="post-date">
+                                    <time datetime="2023-12-30">{{blog.last_updated|timezone:"Asia/Kathmandu"|date}}</time>
+                                    </p>
+                                </div>
+                            </div>
+                        </article>
+                    </div><!-- End post list item -->
+                {% endfor %}
+            </div>
+        </div>
+
+    </section>
+
+    <section id="blogs" class="recent-posts">
+        <div class="container section-title" data-aos="fade-up">
             <h2>Recent Posts</h2>
             <p>Stay updated with the latest insights, events, and news from The Visionarys Nepal community.</p>
         </div>
         <div class="container">
             <div class="row gy-4">
-                <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                    <article>
-                        <div class="post-img">
-                            <img src="assets/img/blog/blog-1.jpg" alt="" class="img-fluid">
-                        </div>
-
-                        <p class="post-category">Nature and her.</p>
-
-                        <h2 class="title">
-                            <a href="https://mediwritestheunspoken.blogspot.com/2023/12/i-was-craving-rain-that-night.html"> I was
-                                craving rain that night.</a>
-                        </h2>
-
-                        <div class="d-flex align-items-center">
-                            <img src="assets/img/blog/blog-author.jpg" alt="" class="img-fluid post-author-img flex-shrink-0">
-                            <div class="post-meta">
-                                <p class="post-author">Medinee Aryal</p>
-                                <p class="post-date">
-                                <time datetime="2023-12-30">30 December 2023</time>
-                                </p>
+                {% for blog in recent_blogs %}
+                    <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                        <article>
+                            <div class="post-img">
+                                <img src="{{blog.image.url}}" alt="{{blog.title}}" class="img-fluid">
                             </div>
-                        </div>
 
-                    </article>
-                </div><!-- End post list item -->
+                            <p class="post-category">{{blog.category.name}}</p>
 
-                <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <article>
+                            <h2 class="title">
+                                <a href="{% url "post_page" blog.slug %}">{{blog.title}}</a>
+                            </h2>
 
-                        <div class="post-img">
-                            <img src="assets/img/blog/blog-2.jpg" alt="" class="img-fluid">
-                        </div>
-
-                        <p class="post-category">3 PM Thoughts</p>
-
-                        <h2 class="title">
-                            <a href="https://mediwritestheunspoken.blogspot.com/2023/06/caged.html">Caged</a>
-                        </h2>
-
-                        <div class="d-flex align-items-center">
-                            <img src="assets/img/blog/blog-author-2.jpg" alt="" class="img-fluid post-author-img flex-shrink-0">
-                            <div class="post-meta">
-                                <p class="post-author">Medinee Aryal</p>
-                                <p class="post-date">
-                                <time datetime="2023-06-04">4 June 2023</time>
-                                </p>
+                            <div class="d-flex align-items-center">
+                                <img src="{{blog.author.profile.profile_image.url}}" alt="" class="img-fluid post-author-img flex-shrink-0">
+                                <div class="post-meta">
+                                    <a href="{% url 'author' blog.author.profile.slug %}" class="post-author">{{blog.author.first_name}} {{blog.author.last_name}}</a>
+                                    <p class="post-date">
+                                    <time datetime="2023-12-30">{{blog.last_updated|timezone:"Asia/Kathmandu"|date}}</time>
+                                </div>
                             </div>
-                        </div>
-
-                    </article>
-                </div>
-
-                <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-                    <article>
-
-                        <div class="post-img">
-                            <img src="assets/img/blog/blog-3.jpg" alt="" class="img-fluid">
-                        </div>
-
-                        <p class="post-category">Night</p>
-
-                        <h2 class="title">
-                            <a href="https://mediwritestheunspoken.blogspot.com/2023/06/rainy-life.html">Rainy life?</a>
-                        </h2>
-
-                        <div class="d-flex align-items-center">
-                            <img src="assets/img/blog/blog-author-3.jpg" alt="" class="img-fluid post-author-img flex-shrink-0">
-                            <div class="post-meta">
-                                <p class="post-author">Medinee Aryal</p>
-                                <p class="post-date">
-                                <time datetime="2023-06-13">13 June 2023</time>
-                                </p>
-                            </div>
-                        </div>
-
-                    </article>
-                </div>
+                        </article>
+                    </div><!-- End post list item -->
+                {% endfor %}
             </div>
         </div>
 
@@ -497,6 +525,7 @@
                     <form action="/" method="post" class="php-email-form" data-aos="fade-up"
                         data-aos-delay="200">
                         {% csrf_token %}
+                        <input name="contact"  type="hidden" value="contact" />
                         <div class="row gy-4">
                             <div class="col-md-6">
                                 {{contact_form.name}}

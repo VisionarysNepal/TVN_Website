@@ -1,0 +1,393 @@
+{% extends 'pages/base.html' %}
+{% load static %}
+{% load tz %}
+{% block title %}Post Title{% endblock title %}
+{% block content %}
+<style>
+    .cursor-pointer {
+        cursor: pointer;
+    }
+
+    .meta-li {
+        color: rgba(var(--default-color-rgb), 0.6);
+        font-size: 14px;
+        display: inline-block;
+        line-height: 1;
+        cursor: default;
+    }
+    .img-fluid {
+        height: 100%;
+        width: 100%;
+    }
+</style>
+<main>
+    <div data-aos="fade" class="page-title">
+        <div class="heading">
+            <div class="container">
+                <div class="row d-flex justify-content-center text-center">
+                    <div class="col-lg-8">
+                        <h1>Blogs</h1>
+                        <p class="mb-0">Explore insightful articles and stay informed about the latest trends, events, and experiences within the Visionary Nepal community.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="breadcrumbs">
+            <div class="container">
+                <ol>
+                    <li><a href="{% url "home" %}">Home</a></li>
+                    <li><a href="{% url "blogs" %}">Blogs</a></li>
+                    <li class="current">{{post.title}}</li>
+                </ol>
+            </div>
+        </nav>
+    </div>
+
+    <section id="blog-details" class="blog-details">
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="row g-5">
+
+                <div class="col-lg-8">
+
+                    <article class="article">
+
+                        <div class="post-img">
+                            <img src="{{post.image.url}}" alt="" class="img-fluid">
+                        </div>
+
+                        <h2 class="title">{{post.title}}</h2>
+
+                        <div class="meta-top">
+                            <ul>
+                                <li class="d-flex align-items-center">
+                                    <i class="bi bi-person"></i>
+                                    <a href="{% url 'author' post.author.profile.slug %}"
+                                    <span class="">{{post.author.first_name}} {{post.author.last_name}}</span>
+                                    </a>
+                                </li>
+                                <li class="d-flex align-items-center">
+                                    <i class="bi bi-clock"></i>
+                                    <span class="meta-li">{{post.last_updated|date}}</span>
+                                </li>
+                                <li class="d-flex align-items-center">
+                                    <i class="bi bi-eye-fill"></i>
+                                    <span class="meta-li">{{post.view_count}} view{{post.view_count|pluralize}}</span>
+                                </li>
+                                <li class="d-flex align-items-center">
+                                    <i class="bi bi-chat-dots"></i>
+                                    <a href="#comments">{{total_comments}} Comment{{total_comments|pluralize}}</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="content">
+                            <p>
+                            {{post.content|safe}}
+                            </p>
+                        </div><!-- End post content -->
+
+                        <div class="meta-bottom">
+                            <i class="bi bi-folder"></i>
+                            <ul class="cats">
+                                <li><a href="#">{{post.category.name}}</a></li>
+                            </ul>
+
+                            <i class="bi bi-tags"></i>
+                            <ul class="tags">
+                                {% for tag in post.tags.all %}
+                                    <li><a href="{% url "tag_page" tag.slug %}">{{tag.name}}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div><!-- End meta bottom -->
+
+                    </article><!-- End post article -->
+
+                    <div class="blog-author d-flex align-items-center">
+                        <img src="assets/img/blog/blog-author.jpg" class="rounded-circle flex-shrink-0" alt="">
+                        <div>
+                            <h4>
+                                <a href="{% url 'author' post.author.profile.slug %}">
+                                    {{post.author.first_name}} {{post.author.last_name}}
+                                </a>
+                            </h4>
+                            <div class="social-links">
+                                {% for social in author_socials %}
+                                <a href="{{social.link_url}}"><i class="{{social.icon.icon}}"></i></a>
+                                {% endfor %}
+                            </div>
+                            <p>
+                            {{post.author.profile.bio}}
+                            </p>
+                        </div>
+                    </div><!-- End post author -->
+
+                    <div id="comments" class="comments">
+
+                        <h4 class="comments-count">{{total_comments}} Comment{{total_comments|pluralize}}</h4>
+
+                        {% for comment in comments %}
+                            <div id="comment-1" class="comment">
+                                <div class="d-flex">
+                                    <div class="comment-img">
+                                        <img src="{% static 'images/profile.svg'%}" alt="Profile">
+                                    </div>
+                                    <div>
+                                        <h5>
+                                            <span class="bold">{{comment.user_name}}</span>
+                                            <span class="bold cursor-pointer" onclick="toggleDiv(this)">
+                                            <i class="bi bi-reply-fill"></i> Reply
+                                            </span>
+                                        </h5>
+                                        <time>{{comment.date|date}}</time>
+                                        <p>
+                                        {{comment.content}}
+                                        </p>
+                                        <div class="reply-form comment-box" style="display:none">
+                                            <h4>Reply to {{comment.user_name}}</h4>
+                                            <p>Your email address will not be published. Required fields are marked * </p>
+                                            <form action="" method="POST">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="post_id" value="{{post.id}}" />
+                                                <input type="hidden" name="parent_id" value="{{comment.id}}" />
+                                                <div class="row">
+                                                    <div class="col-md-6 form-group">
+                                                        {{comment_form.user_name}}
+                                                    </div>
+                                                    <div class="col-md-6 form-group">
+                                                        {{comment_form.email}}
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col form-group">
+                                                        {{comment_form.website}}
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col form-group">
+                                                        {{comment_form.content}}
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-center">
+                                                    <button type="submit" class="btn btn-primary">Reply</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% for reply in comment.replies.all %}
+                                <div id="comment-reply-1" class="comment comment-reply">
+                                    <div class="d-flex">
+                                        <div class="comment-img">
+                                            <img src="{% static 'images/profile.svg' %}" alt="Profile">
+                                        </div>
+                                        <div>
+                                            <h5>
+                                                <span class="bold">{{reply.user_name}}</span>
+                                                <span class="bold cursor-pointer" onclick="toggleDiv(this)">
+                                                    <i class="bi bi-reply-fill"></i> Reply
+                                                </span>
+                                            </h5>
+                                            <time>{{reply.date|date}}</time>
+                                            <p>
+                                                {{reply.content}}
+                                            </p>
+                                            <div class="reply-form comment-box" style="display:none">
+                                                <h4>Reply to {{comment.user_name}}</h4>
+                                                <p>Your email address will not be published. Required fields are marked * </p>
+                                                <form action="" method="POST">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="post_id" value="{{post.id}}" />
+                                                    <input type="hidden" name="parent_id" value="{{reply.id}}" />
+                                                    <div class="row">
+                                                        <div class="col-md-6 form-group">
+                                                            {{comment_form.user_name}}
+                                                        </div>
+                                                        <div class="col-md-6 form-group">
+                                                            {{comment_form.email}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col form-group">
+                                                            {{comment_form.website}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col form-group">
+                                                            {{comment_form.content}}
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="text-center">
+                                                        <button type="submit" class="btn btn-primary">Reply</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {% for r in reply.replies.all %}
+                                        <div id="comment-reply-2" class="comment comment-reply">
+                                            <div class="d-flex">
+                                                <div class="comment-img"><img src="{% static 'images/profile.svg' %}" alt="Profile"></div>
+                                                <div>
+                                                    <h5>
+                                                        <span class="bold">{{r.user_name}}</span>
+                                                        <span class="bold cursor-pointer" onclick="toggleDiv(this)">
+                                                            <i class="bi bi-reply-fill"></i> Reply
+                                                        </span>
+                                                    </h5>
+                                                    <time>{{r.date|date}}</time>
+                                                    <p>
+                                                    {{r.content}}
+                                                    </p>
+                                                    <div class="reply-form comment-box" style="display:none">
+                                                        <h4>Reply to {{comment.user_name}}</h4>
+                                                        <p>Your email address will not be published. Required fields are marked * </p>
+                                                        <form action="" method="POST">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="post_id" value="{{post.id}}" />
+                                                            <input type="hidden" name="parent_id" value="{{reply.id}}" />
+                                                            <div class="row">
+                                                                <div class="col-md-6 form-group">
+                                                                    {{comment_form.user_name}}
+                                                                </div>
+                                                                <div class="col-md-6 form-group">
+                                                                    {{comment_form.email}}
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col form-group">
+                                                                    {{comment_form.website}}
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col form-group">
+                                                                    {{comment_form.content}}
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="text-center">
+                                                                <button type="submit" class="btn btn-primary">Reply</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><!-- End comment reply #2-->
+                                    {% endfor %}
+                            </div><!-- End comment reply #1-->
+                            {% endfor %}
+                        {% endfor %}
+
+                        <div class="reply-form">
+                            <h4>Leave a Reply</h4>
+                            <p>Your email address will not be published. Required fields are marked * </p>
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="post_id" value="{{post.id}}" />
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        {{comment_form.user_name}}
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        {{comment_form.email}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col form-group">
+                                        {{comment_form.website}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col form-group">
+                                        {{comment_form.content}}
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Post Comment</button>
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div><!-- End blog comments -->
+
+                </div>
+
+                <div class="col-lg-4">
+
+                    <div class="sidebar">
+
+                        <div class="sidebar-item search-form">
+                            <h3 class="sidebar-title">Search</h3>
+                            <form method="GET" action="{% url 'search' %}" class="mt-3">
+                                <input type="text" name="search" />
+                                <button type="submit"><i class="bi bi-search"></i></button>
+                            </form>
+                        </div><!-- End sidebar search formn-->
+
+                        <div class="sidebar-item categories">
+                            <h3 class="sidebar-title">Categories</h3>
+                            <ul class="mt-3">
+                                {% for key,value in categories.items %}
+                                <li><a href="{% url 'category_page' value.category.slug %}">{{key}} <span>({{value.count}})</span></a></li>
+                                {% endfor %}
+                            </ul>
+                        </div><!-- End sidebar categories-->
+
+                        <div class="sidebar-item recent-posts">
+                            <h3 class="sidebar-title">Recent Posts</h3>
+
+                            {% for blog in recent_blogs  %}
+                                <div class="post-item">
+                                    <img src="{{blog.image.url}}" alt="{{blog.title}}" class="flex-shrink-0">
+                                    <div>
+                                        <h4><a href="{% url 'post_page' blog.slug%}">{{blog.content|safe|truncatechars:50}}</a></h4>
+                                        <time>{{blog.last_updated|timezone:"Asia/Kathmandu"|date}}</time>
+                                    </div>
+                                </div><!-- End recent post item-->
+                            {% endfor %}
+                        </div><!-- End sidebar recent posts-->
+
+                        <div class="sidebar-item tags">
+                            <h3 class="sidebar-title">Tags</h3>
+                            <ul class="mt-3">
+                                {% for tag in tags %}
+                                <li><a href="{% url "tag_page" tag.slug %}">{{tag.name}}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div><!-- End sidebar tags-->
+
+                    </div><!-- End Sidebar -->
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section><!-- End Blog-details Section -->
+</main>
+
+<script>
+    function toggleDiv(a) {
+        a = a.parentNode.parentNode.parentNode
+        replybox = a.querySelector('.comment-box')
+
+        if (replybox.style.display === "none") {
+            replybox.style.display = "block";
+        } else {
+            replybox.style.display = "none";
+        }
+    }
+</script>
+{% endblock content %}
+

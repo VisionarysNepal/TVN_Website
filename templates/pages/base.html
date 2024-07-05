@@ -1,0 +1,139 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>The Visionarys Nepal | {% block title %} {% endblock %}</title>
+  <meta content="Visionary Nepal: A genuine community where the shared love for cybersecurity and technology forms family-like bonds, nurturing dreams and fostering innovation as we shape a future together." name="description">
+  <meta content="Inclusive Platform, Social Group, Inclusive, Nepal, Collaborative Effort" name="keywords">
+
+  <!-- Favicons -->
+  <link href={% static 'assets/img/favicon.ico' %} rel="icon">
+  <link href={% static "assets/mg/apple-touch-icon.png" %} rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href={% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %} rel="stylesheet">
+  <link href={% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %} rel="stylesheet">
+  <link href={% static 'assets/vendor/glightbox/css/glightbox.min.css' %} rel="stylesheet">
+  <link href={% static 'assets/vendor/swiper/swiper-bundle.min.css' %} rel="stylesheet">
+  <link href={% static 'assets/vendor/aos/aos.css' %} rel="stylesheet">
+
+  <!--  Main CSS File -->
+  <link href={% static 'assets/css/main.css' %} rel="stylesheet">
+</head>
+
+<body class="index-page" data-bs-spy="scroll" data-bs-target="#navmenu">
+
+  <header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="container-fluid d-flex align-items-center justify-content-between">
+
+      <a href={% url 'home' %} class="logo d-flex align-items-center me-auto me-xl-0">
+          <img src={% static "assets/img/Logo.png" %} alt="">
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="{% url 'home' %}" class="active">Home</a></li>
+          <li><a href="{% url 'home' %}#about">About</a></li>
+          <li><a href="{% url 'home' %}#services">Programs</a></li>
+          <li><a href="{% url 'home' %}#portfolio">Our Portfolio</a></li>
+          <li><a href="{% url 'home' %}#team">Team</a></li>
+          <li><a href="{% url 'blogs' %}">Blog</a></li>
+          <li><a href="{% url 'home'  %}#contact">Contact</a></li>
+        </ul>
+
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+    </div>
+  </header>
+
+  {% block content %}
+  {% endblock content%}
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-5 col-md-12 footer-about">
+          <a href="index.html" class="logo d-flex align-items-center">
+            <span>The Visionary Nepal</span>
+          </a>
+          <p>Visionary Nepal: A genuine community where the shared love for cybersecurity and technology forms
+            family-like bonds, nurturing dreams and fostering innovation as we shape a future together.</p>
+          <div class="social-links d-flex mt-4">
+            <a href="https://twitter.com/VisionarysNepal"><i class="bi bi-twitter"></i></a>
+            <a href="https://www.facebook.com/profile.php?id=61554801880096"><i class="bi bi-facebook"></i></a>
+            <a href="https://www.instagram.com/thevisionarysnepal/"><i class="bi bi-instagram"></i></a>
+            <a href="https://www.linkedin.com/in/thevisionarys-nepal-7959b32b0/"><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Useful Links</h4>
+          <ul>
+              <li><a href="{% url 'home' %}" class="active">Home</a></li>
+              <li><a href="{% url 'home' %}#about">About</a></li>
+              <li><a href="#services">Programs</a></li>
+              <li><a href="#portfolio">Our Portfolio</a></li>
+              <li><a href="#team">Team</a></li>
+              <li><a href="#blogs">Blog</a></li>
+              <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+          <h4>Contact Us</h4>
+          <p>SeshmatiPul, Tareshwor, Bagmati</p>
+          <p>Province 3</p>
+          <p>Nepal</p>
+          <p class="mt-4"><strong>Phone:</strong> <span>+977 9761849725</span></p>
+          <p><strong>Email:</strong> <span>thevisionarynepal@gmail.com</span></p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+      <p>&copy; <span>Copyright</span> <strong class="px-1">TVN</strong> <span>All Rights Reserved</span></p>
+      <div class="credits">
+        Designed by <a href="https://www.instagram.com/thevisionarysnepal/">The Visionarys Nepal</a>
+      </div>
+    </div>
+
+  </footer>
+
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <div id="preloader">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <!-- Vendor JS Files -->
+  <script src={% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}></script>
+  <script src={% static 'assets/vendor/glightbox/js/glightbox.min.js' %}></script>
+  <script src={% static 'assets/vendor/purecounter/purecounter_vanilla.js' %}></script>
+  <script src={% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}></script>
+  <script src={% static 'assets/vendor/swiper/swiper-bundle.min.js' %}></script>
+  <script src={% static 'assets/vendor/aos/aos.js' %}></script>
+  <script src={% static 'assets/vendor/php-email-form/validate.js' %}></script>
+
+  <!-- Main JS File -->
+  <script src= {% static 'assets/js/main.js' %}></script>
+
+</body>
+</html>
