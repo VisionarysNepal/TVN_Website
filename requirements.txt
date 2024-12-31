@@ -10,8 +10,8 @@ django-storages==1.14.3
 gunicorn==22.0.0
 jmespath==1.0.1
 packaging==24.1
-pillow==10.3.0
-psycopg2==2.9.9
+pillow
+psycopg2
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 s3transfer==0.10.1
