@@ -169,6 +169,11 @@ CKEDITOR_UPLOAD_PATH = "blogs/"
 CKEDITOR_CONFIGS = {"default": {"toolbar": "basic"}}
 
 try:
+    from .local import *  # noqa
+except ImportError:
     pass
+
+try:
+    from .prod import *  # noqa
 except ImportError:
     pass
