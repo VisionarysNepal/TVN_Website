@@ -30,8 +30,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "+z+Jnz6coaP0uyCni7zkn4L100votvu36f5rr4b/DN
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("IS_DEVELOPMENT", True)
 
-ALLOWED_HOSTS = [os.getenv("APP_HOST"), "127.0.0.1"]
-
+ALLOWED_HOSTS = [os.getenv("APP_HOST"), "www.khesehang.com.np", "127.0.0.1"]
 
 # Application definition
 
