@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "+z+Jnz6coaP0uyCni7zkn4L100votvu36f5rr4b/DN
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("IS_DEVELOPMENT", True)
 
-ALLOWED_HOSTS = [os.getenv("APP_HOST"), "www.khesehang.com.np", "127.0.0.1"]
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -89,18 +89,6 @@ WSGI_APPLICATION = "main.wsgi.application"
 #    }
 # }
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "TVN_website",
-        "USER": "postgres",
-        "PASSWORD": "root",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
-    }
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -125,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Kathmandu"
 
 USE_I18N = True
 
@@ -150,23 +138,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 MEDIA_DIR = BASE_DIR / "media"
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = "/media/"
-
-# django_heroku.settings(locals())
-
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-
-DEFAULT_FILE_STORAGE = os.getenv("DEFAULT_FILE_STORAGE")
-STATICFILES_STORAGE = os.getenv("STATICFILES_STORAGE")
-
-AWS_S3_ACCESS_KEY_ID = os.getenv("AWS_S3_ACCESS_KEY_ID")
-AWS_S3_SECRET_ACCESS_KEY = os.getenv("AWS_S3_SECRET_ACCESS_KEY")
-AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
-AWS_QUERYSTRING_AUTH = os.getenv("AWS_QUERYSTRING_AUTH")
-AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
-
-CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
-CKEDITOR_UPLOAD_PATH = "blogs/"
-CKEDITOR_CONFIGS = {"default": {"toolbar": "basic"}}
 
 try:
     from .local import *  # noqa
