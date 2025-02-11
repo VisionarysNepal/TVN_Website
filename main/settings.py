@@ -167,3 +167,8 @@ AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
 CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
 CKEDITOR_UPLOAD_PATH = "blogs/"
 CKEDITOR_CONFIGS = {"default": {"toolbar": "basic"}}
+
+try:
+    pass
+except ImportError:
+    pass
