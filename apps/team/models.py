@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.utils import timezone
@@ -13,10 +14,18 @@ class Profile(models.Model):
     social_link = models.ForeignKey(
         "contact.SocialLink", on_delete=models.SET_NULL, null=True, blank=True
     )
+    member = models.OneToOneField(
+        "team.Member", on_delete=models.SET_NULL, null=True, blank=True
+    )
+    author = models.OneToOneField(
+        User, on_delete=models.SET_NULL, null=True, blank=True
+    )
 
     def __str__(self):
-        member = self.member
-        return f"{member.name}'s Profile" if member else "Unlinked Profile"
+        if self.member:
+            return f"{self.member}'s profile"
+        else:
+            return f"{self.author}'s profile"
 
 
 class Member(models.Model):
@@ -29,9 +38,6 @@ class Member(models.Model):
         validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
         null=True,
         blank=True,
-    )
-    profile = models.OneToOneField(
-        Profile, on_delete=models.SET_NULL, null=True, blank=True
     )
 
     def save(self, *args, **kwargs):
