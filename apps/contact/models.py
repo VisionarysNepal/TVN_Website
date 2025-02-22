@@ -20,11 +20,18 @@ class SocialLink(models.Model):
         User, on_delete=models.CASCADE, null=True, blank=True, related_name="user"
     )
     member = models.ForeignKey(
-        Member, on_delete=models.CASCADE, null=True, blank=True, related_name="member"
+        Member,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="member_socials",
     )
 
     def __str__(self):
-        return f"{self.icon.name}"
+        if self.author:
+            return f"{self.author}'s social link"
+        else:
+            return f"{self.member}'s social link"
 
 
 class WebsiteMeta(models.Model):

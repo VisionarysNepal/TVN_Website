@@ -10,13 +10,13 @@ class TeamDetailView(DetailView):
     template_name = "team/team_detail.html"
 
     def get_object(self, queryset=None):
-        return get_object_or_404(
-            Member.objects.prefetch_related("works"), slug=self.kwargs["slug"]
-        )
+        qs = Member.objects.prefetch_related("works", "member_socials")
+        return get_object_or_404(qs, slug=self.kwargs["slug"])
 
     def get_context_data(self, **kwargs):
         context = super(TeamDetailView, self).get_context_data(**kwargs)
         member = self.get_object()
         context["member"] = member
         context["works"] = member.works.all()
+        context["social_links"] = member.member_socials.all()
         return context

@@ -107,13 +107,13 @@ span.tag {
     padding: 0;
 }
 
-.social-link svg {
-    width: 30px;
-    fill: var(--primary-color);
+.social-links li i {
+    font-size: 2rem;
+    color: #000000;
 }
 
-.social-link svg:hover {
-    fill: var(--primary-color);
+.social-links li:hover i {
+    color: var(--primary-color);
 }
 
 .copyright p {
