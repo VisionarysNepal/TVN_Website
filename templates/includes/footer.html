@@ -1,0 +1,47 @@
+<footer id="footer" class="footer">
+    <div class="container footer-top">
+        <div class="row gy-4">
+            <div class="col-lg-5 col-md-12 footer-about">
+                <a href="{% url 'home:home' %}" class="logo d-flex align-items-center">
+                    <span>The Visionary Nepal</span>
+                </a>
+                <p>Visionary Nepal: A genuine community where the shared love for cybersecurity and technology forms
+                    family-like bonds, nurturing dreams and fostering innovation as we shape a future together.</p>
+                <div class="social-links d-flex mt-4">
+                    <a href="https://twitter.com/VisionarysNepal"><i class="bi bi-twitter"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=61554801880096"><i class="bi bi-facebook"></i></a>
+                    <a href="https://www.instagram.com/thevisionarysnepal/"><i class="bi bi-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/thevisionarys-nepal-7959b32b0/"><i class="bi bi-linkedin"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-6 footer-links">
+                <h4>Useful Links</h4>
+                <ul>
+                    <li><a href="{% url 'home:home' %}" class="active">Home</a></li>
+                    <li><a href="{% url 'home:home' %}#about">About</a></li>
+                    <li><a href="#services">Programs</a></li>
+                    <li><a href="#portfolio">Our Portfolio</a></li>
+                    <li><a href="#team">Team</a></li>
+                    <li><a href="#blogs">Blog</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+                <h4>Contact Us</h4>
+                <p>{{ website_meta.location }}</p>
+                <p class="mt-4"><strong>Phone:</strong> <span>{{ website_meta.ph_number }}</span></p>
+                <p><strong>Email:</strong> <span>{{ website_meta.email }}</span></p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+        <p><span id="date"></span> &copy; <span>Copyright</span> <strong class="px-1">TVN</strong> <span>All Rights Reserved</span></p>
+        <div class="credits">
+            Designed by <a href="https://www.instagram.com/thevisionarysnepal/">The Visionarys Nepal</a>
+        </div>
+    </div>
+</footer>

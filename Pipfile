@@ -12,6 +12,7 @@ python-dotenv = "*"
 whitenoise = "*"
 django-storages = {extras = ["boto3"], version = "*"}
 pillow = "*"
+requests = "*"
 
 [dev-packages]
 pre-commit = "*"

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}About{% endblock title%}
+{% block content %}
+<main id="main" style="opacity: 1;">
+    <section id="team" class="team">
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Team</h2>
+            <p>The Visionarys Nepal team is a tight-knit group of tech enthusiasts who share a deep passion for
+            cybersecurity and technology, combining their diverse experiences to make learning accessible and engaging
+            for all.</p>
+        </div>
+
+        <div class="container">
+            <div class="row gy-5">
+                {% for key,value in members.items %}
+                    <div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="100">
+                        <div class="member-img">
+                            <img src="{{value.member.profile_img.url}}" class="img-fluid" alt="">
+                            <div class="social">
+                                {% for link in value.social_links %}
+                                    <a href="{{link.link_url}}"><i class="{{link.icon.icon}}"></i></a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="member-info text-center">
+                            <h4>{{value.member.name}}</h4>
+                            <span>{{value.member.designation}}</span>
+                            <p>{{value.member.description}}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock content %}

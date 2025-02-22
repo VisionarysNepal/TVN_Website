@@ -41,10 +41,15 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "pages.apps.PagesConfig",
+    # Dependencies
     "storages",
     "ckeditor",
     "ckeditor_uploader",
+    # Inbuilt Apps
+    "apps.home.apps.HomeConfig",
+    "apps.blog.apps.BlogConfig",
+    "apps.contact.apps.ContactConfig",
+    "apps.team.apps.TeamConfig",
 ]
 
 MIDDLEWARE = [
@@ -71,6 +76,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "main.context_processors.website_meta",
             ],
         },
     },
@@ -138,6 +144,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 MEDIA_DIR = BASE_DIR / "media"
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = "/media/"
+GOOGLE_RECAPTCHA_SECRET_KEY = "6Lc5x9oqAAAAACf_O0YpcgVK68kl9oPctcao6Or4"
 
 try:
     from .local import *  # noqa

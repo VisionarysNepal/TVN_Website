@@ -1,0 +1,107 @@
+<form method="post" class="php-email-form" data-aos="fade-up"
+      data-aos-delay="200" id="contact-form">
+    {% csrf_token %}
+    <input name="form_type" type="hidden" value="contact"/>
+    <div class="row gy-4">
+        <div class="col-md-6">
+            {{ form.name }}
+        </div>
+
+        <div class="col-md-6 ">
+            {{ form.email }}
+        </div>
+
+        <div class="col-md-12">
+            {{ form.subject }}
+        </div>
+
+        <div class="col-md-12">
+            {{ form.message }}
+        </div>
+
+        <div class="col-md-12 text-center">
+            <div class="loading">Loading</div>
+            <div class="error-message"></div>
+            <div class="sent-message">Your message has been sent. Thank you!</div>
+            <button class="g-recaptcha submit" data-sitekey="6Lc5x9oqAAAAANG8HiAQe-no6PTqDS4u_cnjqo9G"
+                    data-callback="onSubmit"
+                    data-action="submit" type="submit">
+                Send Message
+            </button>
+        </div>
+    </div>
+</form>
+
+<script>
+    const contact_form = document.querySelector("#contact-form");
+    const loading_div = contact_form.querySelector(".loading");
+    const error_div = contact_form.querySelector(".error-message");
+    const success_div = contact_form.querySelector(".sent-message");
+
+    async function onSubmit(token) {
+        loading_div.classList.add("d-block");
+        error_div.classList.remove("d-block");
+        success_div.classList.remove("d-block");
+
+        const inputs = contact_form.querySelectorAll("input:not([type=hidden])");
+        let is_valid = true;
+
+        inputs.forEach(input => {
+            if (!input.value.trim()) {
+                is_valid = false;
+                return;
+            }
+            if (input.type === "email" && !validate_email(input)) {
+                is_valid = false;
+
+            }
+        });
+
+        if (!is_valid) {
+            loading_div.classList.remove("d-block");
+            return;
+        }
+
+        const form_data = new FormData(contact_form);
+        form_data.append("g-recaptcha-response", token);
+
+        try {
+            const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+            const response = await fetch("/", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken,
+                },
+                body: form_data
+            });
+
+            const data = await response.json();
+
+            loading_div.classList.remove("d-block");
+
+            if (response.ok) {
+                success_div.innerHTML = data.message;
+                success_div.classList.add("d-block");
+                contact_form.reset();
+
+                setTimeout(function () {
+                    success_div.classList.remove("d-block");
+                }, 1500);
+            } else {
+                error_div.innerHTML = data.error || "Unable to send message";
+                error_div.classList.add("d-block");
+                setTimeout(function () {
+                    error_div.classList.remove("d-block");
+                }, 1500);
+            }
+        } catch (e) {
+            loading_div.classList.remove("d-block");
+            error_div.classList.add("d-block");
+            error_div.innerHTML = "Unable to send message. Please try again.";
+            setTimeout(function () {
+                error_div.classList.remove("d-block");
+            }, 1500);
+            console.error(e);
+        }
+    }
+</script>

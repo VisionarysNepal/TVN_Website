@@ -19,9 +19,16 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
+admin.site.site_title = "Dashboard"
+admin.site.site_header = "The Visionarys Nepal"
+admin.site.index_title = "The Visionarys Nepal (TVN)"
+
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("pages.urls")),
+    path("", include("apps.home.urls")),
+    path("blogs/", include("apps.blog.urls")),
+    path("teams/", include("apps.team.urls")),
+    path("contact/", include("apps.contact.urls")),
     path("ckeditor/", include("ckeditor_uploader.urls")),
 ]
 

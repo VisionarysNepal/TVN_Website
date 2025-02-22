@@ -1,0 +1,89 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>The Visionarys Nepal | {% block title %} {% endblock %}</title>
+    <meta content="Visionary Nepal: A genuine community where the shared love for cybersecurity and technology forms family-like bonds, nurturing dreams and fostering innovation as we shape a future together."
+          name="description"/>
+    <meta content="Inclusive Platform, Social Group, Inclusive, Nepal, Collaborative Effort" name="keywords"/>
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static '/assets/img/favicon/apple-touch-icon.png' %}"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static '/assets/img/favicon/favicon-32x32.png' %}"/>
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static '/assets/img/favicon/favicon-16x16.png' %}"/>
+    <link rel="manifest" href="{% static '/assets/img/favicon/site.webmanifest' %}"/>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+          rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet"/>
+    <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet"/>
+
+    <!--  Main CSS File -->
+    <link href="{% static 'assets/css/main.css' %}" rel="stylesheet"/>
+
+    <!-- Extra CSS -->
+    {% block extra_css %}
+    {% endblock %}
+</head>
+
+<body class="index-page" data-bs-spy="scroll" data-bs-target="#navmenu">
+    <!-- Header -->
+    {% include "includes/header.html" %}
+
+    {% block content %}
+    {% endblock content %}
+
+    <!-- ======= Footer ======= -->
+    {% include "includes/footer.html" %}
+
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+        <i class="bi bi-arrow-up-short"></i>
+    </a>
+
+    <div id="preloader">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
+    <!-- Vendor JS Files -->
+    <script src={% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}></script>
+    <script src={% static 'assets/vendor/glightbox/js/glightbox.min.js' %}></script>
+    <script src={% static 'assets/vendor/purecounter/purecounter_vanilla.js' %}></script>
+    <script src={% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}></script>
+    <script src={% static 'assets/vendor/swiper/swiper-bundle.min.js' %}></script>
+    <script src={% static 'assets/vendor/aos/aos.js' %}></script>
+
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
+
+    <!-- Main JS File -->
+    <script src="{% static 'assets/js/utils.js' %}"></script>
+    <script src= {% static 'assets/js/main.js' %}></script>
+
+    <!-- Google Recaptcha -->
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+
+    <!-- Extra JS -->
+    {% block extra_js %}
+    {% endblock %}
+    <script>
+        const date = new Date();
+        const dateSpan = document.querySelector("#date");
+        dateSpan.innerHTML = date.getFullYear();
+    </script>
+</body>
+</html>

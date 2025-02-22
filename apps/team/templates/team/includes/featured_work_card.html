@@ -1,0 +1,19 @@
+{% load static %}
+
+<div class="card featured-work-card">
+    {% if work.image %}
+        <img src="{{ work.image.url }}" alt="{{ work.name }}" class="card-img-top" />
+    {% else %}
+        <img src="{% static 'assets/img/The Visionarys Nepal (logo).png' %}" class="card-img-top" alt="">
+    {% endif %}
+
+    <div class="card-body">
+        <h3 class="h4 card-title">{{ work.title }}</h3>
+        <div class="d-flex tags align-items-center">
+            <span class="btn btn-tag">{{ work.year }}</span> <span class="tag">{{ work.tag }}</span>
+        </div>
+        <p class="card-text">
+            {{ work.description }}
+        </p>
+    </div>
+</div>
