@@ -95,7 +95,8 @@
                         <h2>We are the team of Dedicated individuals</h2>
                         <p>
                             We, a dedicated team in Nepal, are committed to advancing tech welfare and industry
-                            awareness. We aim to create positive change and shape a brighter, more informed future for all.
+                            awareness. We aim to create positive change and shape a brighter, more informed future for
+                            all.
                         </p>
                     </div>
 
@@ -414,9 +415,14 @@
                                     <div class="swiper-slide">
                                         <div class="testimonial-item">
                                             <div class="d-flex">
-                                                <img src="{{ feedback.profile_img.url }}"
-                                                     class="testimonial-img flex-shrink-0"
-                                                     alt="">
+                                                {% if feedback.profile_img %}
+                                                    <img src="{{ feedback.profile_img.url }}"
+                                                         class="testimonial-img flex-shrink-0"
+                                                         alt="{{ feedbacks.name }}"/>
+                                                {% else %}
+                                                    <img src="{% static 'assets/img/profile.png' %}" alt="Profile Image" />
+                                                {% endif %}
+
                                                 <div>
                                                     <h3>{{ feedback.name }}</h3>
                                                     <h4>{{ feedback.title }}</h4>

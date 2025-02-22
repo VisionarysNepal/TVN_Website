@@ -50,7 +50,7 @@ class Feedback(models.Model):
     name = models.CharField(max_length=255)
     title = models.CharField(max_length=255)
     quote = models.TextField()
-    profile_img = models.ImageField(upload_to="feedbacks/")
+    profile_img = models.ImageField(upload_to="feedbacks/", blank=True, null=True)
 
     def __str__(self):
         return f"{self.name}"
