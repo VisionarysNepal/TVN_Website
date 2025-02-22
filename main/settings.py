@@ -128,10 +128,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
-
 STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
-
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
@@ -141,8 +138,6 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-MEDIA_DIR = BASE_DIR / "media"
-MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = "/media/"
 GOOGLE_RECAPTCHA_SECRET_KEY = "6Lc5x9oqAAAAACf_O0YpcgVK68kl9oPctcao6Or4"
 
