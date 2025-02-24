@@ -145,7 +145,7 @@
                             <div class="rounded-circle flex-shrink-0 overflow-hidden" style="margin: 20px;">
                                 {% if post.author.profile.profile_image %}
                                     <img src="{{ post.author.profile.profile_image.url }}" alt="{{ post.author }}"
-                                         class="rounded-circle object-fit-cover"/>
+                                         class="rounded-circle object-fit-contain"/>
                                 {% else %}
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
                                          class="author-profile">
