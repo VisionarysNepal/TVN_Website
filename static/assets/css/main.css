@@ -1442,14 +1442,6 @@ section {
 
 /* Vision Section - Home Page
 ------------------------------*/
-.vision {
-    padding: 60px 0 120px 0;
-}
-
-.vision .section-title {
-    margin-bottom: 40px;
-}
-
 .vision .pricing-item {
     box-shadow: 0 3px 20px -2px rgba(var(--default-color-rgb), 0.1);
     padding: 60px 40px;
@@ -2756,6 +2748,7 @@ section {
 .blog-details .sidebar .recent-posts .post-item {
     display: flex;
     margin-top: 15px;
+    align-items: center;
 }
 
 .blog-details .sidebar .recent-posts img {
@@ -2846,6 +2839,10 @@ section {
 .blog-details .blog-author .social-links a {
     color: rgba(var(--default-color-rgb), 0.4);
     margin-right: 5px;
+}
+
+.blog-details .blog-author .social-links a i:hover {
+    color: var(--primary-color) !important;
 }
 
 .blog-details .blog-author p {

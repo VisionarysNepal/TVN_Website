@@ -37,19 +37,34 @@ class Category(models.Model):
 
 class Blog(models.Model):
     title = models.CharField(max_length=255)
+    headline = models.CharField(max_length=255, blank=True, null=True)
     content = RichTextUploadingField()
     last_updated = models.DateTimeField(auto_now=True)
     slug = models.SlugField(max_length=255, unique=True)
     image = models.ImageField(null=True, blank=True, upload_to="blogs/")
-    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    tags = models.ManyToManyField(Tag, blank=True, related_name="post")
+    author = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="blog_author",
+    )
+    tags = models.ManyToManyField(Tag, blank=True, related_name="blog_tags")
     view_count = models.IntegerField(null=True, blank=True)
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, null=True, blank=True
+        Category,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="blog_category",
     )
 
     def __str__(self):
         return f"{self.title}"
+
+    @property
+    def get_author_name(self):
+        return self.author.profile.get_name
 
 
 class Comment(models.Model):

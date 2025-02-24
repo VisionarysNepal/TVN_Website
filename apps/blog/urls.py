@@ -10,6 +10,6 @@ urlpatterns = [
     path("blog/<slug:slug>/", BlogDetailPageView.as_view(), name="blog_detail_page"),
     path("tag/<slug:slug>/", views.tag_page, name="tag_page"),
     path("category/<slug:slug>/", views.category_page, name="category_page"),
-    path("author/<slug:slug>/", views.author, name="author"),
+    path("author/<slug:slug>/", views.BlogAuthorView.as_view(), name="author"),
     path("search/", views.search, name="search"),
 ]

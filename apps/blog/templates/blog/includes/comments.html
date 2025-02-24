@@ -1,6 +1,5 @@
 <h4 class="comments-count">{{ post.total_comments }} Comment{{ post.total_comments|pluralize }}</h4>
-
-{% for comment in comments %}
+{% for comment in post.comments.all %}
     {% if not comment.parent %}
         <div id="comment-{{ comment.id }}" class="comment">
             <div class="d-flex">

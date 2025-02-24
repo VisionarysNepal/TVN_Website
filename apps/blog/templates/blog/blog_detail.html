@@ -25,7 +25,6 @@
         .author-profile {
             height: 120px;
             width: 120px;
-            margin-right: 20px;
         }
 
         .blog-details .blog-author img {
@@ -84,7 +83,11 @@
                         <article class="article">
 
                             <div class="post-img">
-                                <img src="{{ post.image.url }}" alt="" class="img-fluid"/>
+                                {% if post.image %}
+                                    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid"/>
+                                {% else %}
+                                    <img src="{% static 'assets/img/blog_static.jpg' %}" class="img-fluid" alt="Blog Image" />
+                                {% endif %}
                             </div>
 
                             <h2 class="title">{{ post.title }}</h2>
@@ -94,7 +97,7 @@
                                     <li class="d-flex align-items-center">
                                         <i class="bi bi-person"></i>
                                         <a href="{% url 'blog:author' post.author.profile.slug %}">
-                                            <span class="">{{ post.author.first_name }} {{ post.author.last_name }}</span>
+                                            <span class="">{{ post.get_author_name }}</span>
                                         </a>
                                     </li>
                                     <li class="d-flex align-items-center">
@@ -154,11 +157,11 @@
                             <div>
                                 <h4>
                                     <a href="{% url 'blog:author' post.author.profile.slug %}">
-                                        {{ post.author.first_name }} {{ post.author.last_name }}
+                                        {{ post.get_author_name }}
                                     </a>
                                 </h4>
                                 <div class="social-links">
-                                    {% for social in author_socials %}
+                                    {% for social in post.author.user_socials.all %}
                                         <a href="{{ social.link_url }}"><i class="{{ social.icon.icon }}"></i></a>
                                     {% endfor %}
                                 </div>
@@ -221,9 +224,12 @@
                             <div class="sidebar-item categories">
                                 <h3 class="sidebar-title">Categories</h3>
                                 <ul class="mt-3">
-                                    {% for key,value in categories.items %}
-                                        <li><a href="{% url 'blog:category_page' value.category.slug %}">{{ key }}
-                                            <span>({{ value.count }})</span></a></li>
+                                    {% for category in categories %}
+                                        <li>
+                                            <a href="{% url 'blog:category_page' category.slug %}">{{ category }}
+                                                <span>({{ category.total_blogs }})</span>
+                                            </a>
+                                        </li>
                                     {% endfor %}
                                 </ul>
                             </div><!-- End sidebar categories-->
@@ -233,10 +239,20 @@
 
                                 {% for blog in recent_blogs %}
                                     <div class="post-item">
-                                        <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="flex-shrink-0">
+                                        {% if blog.image %}
+                                            <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="flex-shrink-0" />
+                                        {% else %}
+                                            <img src="{% static 'assets/img/blog_static.jpg' %}" alt="Blog Image" class="flex-shrink-0" />
+                                        {% endif %}
                                         <div>
                                             <h4>
-                                                <a href="{% url 'blog:blog_detail_page' blog.slug %}">{{ blog.content|safe|truncatechars:50 }}</a>
+                                                <a href="{% url 'blog:blog_detail_page' blog.slug %}">
+                                                    {% if blog.headline %}
+                                                    	{{ blog.headline|truncatechars:50 }}
+                                                    {% else %}
+                                                        {{ blog.title }}
+                                                    {% endif %}
+                                                </a>
                                             </h4>
                                             <time>{{ blog.last_updated|timezone:"Asia/Kathmandu"|date }}</time>
                                         </div>

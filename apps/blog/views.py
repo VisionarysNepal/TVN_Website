@@ -7,7 +7,6 @@ from django.views.generic import DetailView, TemplateView
 
 from apps.blog.forms import CommentForm
 from apps.blog.models import Blog, Category, Comment, Tag
-from apps.contact.models import SocialLink
 
 
 # Create your views here.
@@ -16,7 +15,11 @@ class BlogPageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         super().get_context_data(**kwargs)
-        blogs = Blog.objects.all().order_by("-view_count")
+        blogs = (
+            Blog.objects.all()
+            .select_related("author", "category")
+            .order_by("-view_count")
+        )
         page_num = self.request.GET.get("q")
         paginator = Paginator(blogs, 6)
         page_obj = paginator.get_page(page_num)
@@ -30,50 +33,47 @@ class BlogDetailPageView(DetailView):
     template_name = "blog/blog_detail.html"
 
     def get_object(self, queryset=None):
-        qs = Blog.objects.annotate(
-            total_comments=Count("comments", filter=Q(comments__parent=None))
-        ).prefetch_related("comments")
-
+        qs = (
+            Blog.objects.select_related("author", "category")
+            .prefetch_related(
+                "comments",
+                "comments__parent",
+                "comments__replies",
+                "author__user_socials__icon",
+            )
+            .annotate(total_comments=Count("comments", filter=Q(comments__parent=None)))
+        )
         return get_object_or_404(qs, slug=self.kwargs["slug"])
 
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
+
     def get_context_data(self, **kwargs):
-        super().get_context_data(**kwargs)
-        blog_post = self.get_object()
+        blog = self.get_object()
         recent_blogs = Blog.objects.all().order_by("-last_updated")
         tags = Tag.objects.all()
-        comments = Comment.objects.filter(post=blog_post, parent=None)
         comment_form = CommentForm()
-        author_socials = SocialLink.objects.filter(author=blog_post.author)
-        categories = Category.objects.all()
+        categories = Category.objects.annotate(
+            total_blogs=Count("blog_category", distinct=True)
+        ).order_by("-total_blogs")
 
-        category_dict = {}
-        for category in categories:
-            count = (
-                Blog.objects.filter(category=category)
-                .annotate(Count("category"))
-                .count()
-            )
-            category_dict[category.name] = {"category": category, "count": count}
-
-        if blog_post.view_count is None:
-            blog_post.view_count = 1
+        if blog.view_count is None:
+            blog.view_count = 1
         else:
-            blog_post.view_count = blog_post.view_count + 1
-        blog_post.save()
+            blog.view_count = blog.view_count + 1
+        blog.save()
 
-        if self.request.GET:
-            query = self.request.GET.get("q")
-            if query != "":
-                blogs = Blog.objects.filter(title__icontains=query)
+        query = self.request.GET.get("q")
+        if query is not None and query != "":
+            blogs = Blog.objects.filter(title__icontains=query)
 
         context = {
-            "post": blog_post,
+            "post": blog,
             "comment_form": comment_form,
-            "comments": comments,
             "recent_blogs": recent_blogs,
             "tags": tags,
-            "author_socials": author_socials,
-            "categories": category_dict,
+            "categories": categories,
         }
 
         return context
@@ -83,7 +83,6 @@ class BlogDetailPageView(DetailView):
         blog_post = self.get_object()
         comment_form = CommentForm(request.POST)
         if comment_form.is_valid:
-            parent = None
             if request.POST.get("parent_id"):
                 parent_id = request.POST.get("parent_id")
                 parent = Comment.objects.get(id=parent_id)
@@ -96,19 +95,20 @@ class BlogDetailPageView(DetailView):
                         request,
                         "blog/includes/comments.html",
                         {
-                            "comments": Comment.objects.all(),
+                            "post": self.get_object(),
+                            "comment_form": CommentForm(),
                         },
                     )
             else:
                 comment = comment_form.save(commit=False)
                 comment.post = blog_post
                 comment.save()
-                print(comment)
                 return render(
                     request,
                     "blog/includes/comments.html",
                     {
-                        "comments": Comment.objects.all(),
+                        "post": self.get_object(),
+                        "comment_form": CommentForm(),
                     },
                 )
         return JsonResponse({"error": "Invalid Form", "status": "500"})
@@ -131,23 +131,39 @@ def tag_page(request, slug):
     return render(request, "blog/tag_page.html", context)
 
 
-def author(request, slug):
-    author = User.objects.get(profile__slug=slug)
-    top_authors = User.objects.annotate(number=Count("blog")).order_by("-number")
-    top_blogs = Blog.objects.filter(author__profile__slug=slug).order_by("-view_count")[
-        0:3
-    ]
-    recent_blogs = Blog.objects.filter(author__profile__slug=slug).order_by(
-        "-last_updated"
-    )[0:3]
-    context = {
-        "author": author,
-        "top_blogs": top_blogs,
-        "recent_blogs": recent_blogs,
-        "top_authors": top_authors,
-    }
+class BlogAuthorView(DetailView):
+    template_name = "blog/author.html"
+    model = User
 
-    return render(request, "blog/author.html", context)
+    def get_object(self, queryset=None):
+        qs = User.objects.select_related("profile").prefetch_related(
+            "blog_author", "blog_author__category"
+        )
+        return get_object_or_404(qs, profile__slug=self.kwargs["slug"])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        author = self.get_object()
+        top_authors = (
+            User.objects.select_related("profile")
+            .annotate(total_blogs=Count("blog_author"))
+            .order_by("-total_blogs")
+        )
+        top_blogs = author.blog_author.prefetch_related("category").order_by(
+            "-view_count"
+        )[0:3]
+        recent_blogs = author.blog_author.prefetch_related("category").order_by(
+            "-last_updated"
+        )[0:3]
+        context.update(
+            {
+                "author": author,
+                "top_authors": top_authors,
+                "top_blogs": top_blogs,
+                "recent_blogs": recent_blogs,
+            }
+        )
+        return context
 
 
 def category_page(request, slug):

@@ -27,7 +27,7 @@
                 </div>
                 <div>
                     <figure class="text-center">
-                        {% if member.profile %}
+                        {% if member.profile.profile_image %}
                             <img class="img-thumbnail rounded-circle w-50" src="{{ member.profile.profile_image.url }}"
                                  alt="{{ member.name }}"/>
                         {% else %}

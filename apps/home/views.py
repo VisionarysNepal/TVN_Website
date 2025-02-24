@@ -1,22 +1,13 @@
 import requests
 from django.conf import settings
+from django.db.models import Count
 from django.http import JsonResponse
 from django.views.generic import TemplateView
 
 from apps.blog.models import Blog
 from apps.contact.forms import ContactForm
-from apps.contact.models import SocialIcon, SocialLink, WebsiteMeta
 from apps.home.forms import SubscribeForm
-from apps.home.models import (
-    Collab,
-    Event,
-    Feature,
-    FeatureImage,
-    Feedback,
-    Goal,
-    Highlight,
-    Program,
-)
+from apps.home.models import Collab, Event, Feature, Feedback, Goal, Highlight, Program
 from apps.team.models import Member
 
 
@@ -26,58 +17,47 @@ class HomePageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        meta = None
-        if WebsiteMeta.objects.all().exists():
-            meta = WebsiteMeta.objects.all()[0]
-
         collabs = Collab.objects.all()
         goals = Goal.objects.all()
         programs = Program.objects.all()
         events = Event.objects.all()
         highlights = Highlight.objects.all()
-        members = Member.objects.all()
-        icons = SocialIcon.objects.all()
+        members = Member.objects.select_related("profile").prefetch_related(
+            "member_socials__icon"
+        )
         feedbacks = Feedback.objects.all()
-        features = Feature.objects.all()
+        features = (
+            Feature.objects.all()
+            .prefetch_related("feature_images")
+            .annotate(feature_images_count=Count("feature_images"))
+        )
 
         contact_form = ContactForm()
         subscribe_form = SubscribeForm()
 
-        all_blogs = Blog.objects.all()
-        top_blogs = Blog.objects.all().order_by("-view_count")[0:3]
-        recent_blogs = Blog.objects.all().order_by("-last_updated")[0:3]
+        all_blogs = Blog.objects.select_related("author__profile").prefetch_related(
+            "category"
+        )
+        top_blogs = all_blogs.order_by("-view_count")[0:3]
+        recent_blogs = all_blogs.order_by("-last_updated")[0:3]
 
-        member_social = {}
-        feature_images = {}
-
-        for feature in features:
-            images = list(FeatureImage.objects.filter(feature=feature))
-            feature_images[feature.title] = {"feature": feature, "images": images}
-
-        for member in members:
-            social_links = SocialLink.objects.filter(member=member)
-
-            member_social[member.name] = {
-                "member": member,
-                "social_links": social_links,
+        context.update(
+            {
+                "collabs": collabs,
+                "goals": goals,
+                "programs": programs,
+                "features": features,
+                "events": events,
+                "highlights": highlights,
+                "members": members,
+                "feedbacks": feedbacks,
+                "contact_form": contact_form,
+                "blogs": all_blogs,
+                "top_blogs": top_blogs,
+                "recent_blogs": recent_blogs,
+                "subscribe_form": subscribe_form,
             }
-
-        context = {
-            "collabs": collabs,
-            "goals": goals,
-            "programs": programs,
-            "events": events,
-            "highlights": highlights,
-            "members": member_social,
-            "feedbacks": feedbacks,
-            "contact_form": contact_form,
-            "feature_images": feature_images,
-            "blogs": all_blogs,
-            "top_blogs": top_blogs,
-            "recent_blogs": recent_blogs,
-            "subscribe_form": subscribe_form,
-            "meta": meta,
-        }
+        )
 
         return context
 

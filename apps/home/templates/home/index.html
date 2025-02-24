@@ -25,19 +25,23 @@
 {% block content %}
     <main id="main">
         <section id="hero" class="hero">
-            <img src="{% static 'assets/img/hero-bg.jpg' %}" alt="" data-aos="fade-in">
+            {% if website_meta.home_banner %}
+                <img src="{{ website_meta.home_banner.url }}" alt="Home Hero Image" data-aos="fade-in"/>
+            {% else %}
+                <img src="{% static 'assets/img/hero-bg.jpg' %}" alt="Home Hero Image" data-aos="fade-in"/>
+            {% endif %}
             <div class="container">
                 <div class="row">
                     <div class="col-lg-10">
-                        {% if meta.title %}
-                            <h2 data-aos="fade-up" data-aos-delay="100">{{ meta.title }}</h2>
+                        {% if website_meta.title %}
+                            <h2 data-aos="fade-up" data-aos-delay="100">{{ website_meta.title }}</h2>
                         {% else %}
                             <h2 data-aos="fade-up" data-aos-delay="100">Welcome to Our Website</h2>
                         {% endif %}
 
-                        {% if meta.description %}
+                        {% if website_meta.description %}
                             <p data-aos="fade-up" data-aos-delay="200">
-                                {{ meta.description }}
+                                {{ website_meta.description }}
                             </p>
                         {% else %}
                             <p data-aos="fade-up" data-aos-delay="200">
@@ -143,7 +147,7 @@
             </div>
         </section>
 
-        {% if feature_images %}
+        {% if features %}
             <section id="features" class="features">
                 <div class="container section-title" data-aos="fade-up">
                     <h2>Features</h2>
@@ -152,14 +156,14 @@
                         adaptability in the realms of cybersecurity and technology.</p>
                 </div>
                 <div class="container">
-                    {% for key,value in feature_images.items %}
-                        {% if value.images|length > 1 %}
+                    {% for feature in features %}
+                        {% if feature.feature_images_count > 1 %}
                             <div class="row gy-4 align-items-center features-item">
                                 <div class="col-lg-5 order-2 order-lg-1 aos-init aos-animate" data-aos="fade-up"
                                      data-aos-delay="200">
-                                    <h3>{{ value.feature.title }}</h3>
+                                    <h3>{{ feature.title }}</h3>
                                     <p>
-                                        {{ value.feature.description }}
+                                        {{ feature.description }}
                                     </p>
                                     <a href="https://docs.google.com/forms/d/e/1FAIpQLScmpMB42pBP4IoAUgCsFOpCxNge3X4wZXqVjPJyyvzFlGNoww/viewform?usp=sf_link"
                                        class="btn btn-get-started">Get Started</a>
@@ -167,30 +171,36 @@
                                 <div class="col-lg-7 order-1 order-lg-2 d-flex align-items-center aos-init aos-animate"
                                      data-aos="zoom-out" data-aos-delay="100">
                                     <div class="image-stack">
-                                        <img src="{{ value.images.0.image.url }}" alt="" class="stack-front">
-                                        <img src="{{ value.images.1.image.url }}" alt="" class="stack-back">
+                                        <img src="{{ feature.feature_images.all.0.image.url }}" alt=""
+                                             class="stack-front">
+                                        <img src="{{ feature.feature_images.all.1.image.url }}" alt=""
+                                             class="stack-back">
                                     </div>
                                 </div>
                             </div>
                         {% endif %}
-                        {% if value.images|length < 2 %}
+                        {% if feature.feature_images_count < 2 %}
                             <div class="row gy-4 align-items-stretch justify-content-between features-item ">
-                                {% for image in value.images %}
+                                {% for feature_image in feature.feature_images.all %}
                                     <div class="col-lg-6 d-flex align-items-center features-img-bg aos-init aos-animate"
                                          data-aos="zoom-out">
-                                        <img src="{{ image.image.url }}" style="object-position: unset;"
-                                             class="img-fluid" alt="{{ image.title }}">
+                                        <img src="{{ feature_image.image.url }}" style="object-position: unset;"
+                                             class="img-fluid" alt="{{ feature_image.title }}">
                                     </div>
                                 {% endfor %}
 
                                 <div class="col-lg-5 d-flex justify-content-center flex-column aos-init aos-animate"
                                      data-aos="fade-up">
-                                    <h3>{{ value.feature.title }}</h3>
-                                    <p>{{ value.feature.description }}</p>
+                                    <h3>{{ feature.title }}</h3>
+                                    <p>{{ feature.description }}</p>
                                     <ul>
-                                        <li><i class="bi bi-check"></i> <span>Helps People Stay Informed.</span></li>
-                                        <li><i class="bi bi-check"></i><span> Provides Clear Event Details</span></li>
-                                        <li><i class="bi bi-check"></i> <span>Makes Finding Events Simple</span>.</li>
+                                        <li><i class="bi bi-check"></i> <span>Helps People Stay Informed.</span>
+                                        </li>
+                                        <li>
+                                            <i class="bi bi-check"></i><span> Provides Clear Event Details</span>
+                                        </li>
+                                        <li><i class="bi bi-check"></i> <span>Makes Finding Events Simple</span>.
+                                        </li>
                                     </ul>
                                     <a href="https://docs.google.com/forms/d/e/1FAIpQLScmpMB42pBP4IoAUgCsFOpCxNge3X4wZXqVjPJyyvzFlGNoww/viewform?usp=sf_link"
                                        class="btn btn-get-started align-self-start">Get Started</a>
@@ -340,20 +350,25 @@
 
             <div class="container">
                 <div class="row gy-5">
-                    {% for key,value in members.items %}
+                    {% for member in members %}
                         <div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="100">
                             <div class="member-img">
-                                <img src="{{ value.member.profile.profile_image.url }}" class="img-fluid" alt="">
+                                {% with profile_img=member.profile.profile_image %}
+                                    <img src="{% if profile_img %}{{ profile_img.url }}{% else %}{%static 'assets/img/profile.svg' %}{% endif %}" class="img-fluid" alt="{{ member.name }}" />
+                                {% endwith %}
+
                                 <div class="social">
-                                    {% for link in value.social_links %}
-                                        <a href="{{ link.link_url }}"><i class="{{ link.icon.icon }}"></i></a>
+                                    {% for link in member.member_socials.all %}
+                                        <a href="{{ link.link_url }}">
+                                            <i class="{{ link.icon.icon }}"></i>
+                                        </a>
                                     {% endfor %}
                                 </div>
                             </div>
                             <div class="member-info text-center">
-                                <h4><a href="{% url 'team:team' value.member.slug %}">{{ value.member.name }}</a></h4>
-                                <span>{{ value.member.designation }}</span>
-                                <p>{{ value.member.description }}</p>
+                                <h4><a href="{% url 'team:team' member.profile.slug %}">{{ member.name }}</a></h4>
+                                <span>{{ member.designation }}</span>
+                                <p>{{ member.description }}</p>
                             </div>
                         </div>
                     {% endfor %}
@@ -420,7 +435,9 @@
                                                          class="testimonial-img flex-shrink-0"
                                                          alt="{{ feedbacks.name }}"/>
                                                 {% else %}
-                                                    <img class="testimonial-img flex-shrink-0" src="{% static 'assets/img/profile.png' %}" alt="Profile Image" />
+                                                    <img class="testimonial-img flex-shrink-0"
+                                                         src="{% static 'assets/img/profile.png' %}"
+                                                         alt="Profile Image"/>
                                                 {% endif %}
 
                                                 <div>

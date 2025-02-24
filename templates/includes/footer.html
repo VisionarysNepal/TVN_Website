@@ -20,11 +20,11 @@
                 <ul>
                     <li><a href="{% url 'home:home' %}" class="active">Home</a></li>
                     <li><a href="{% url 'home:home' %}#about">About</a></li>
-                    <li><a href="#services">Programs</a></li>
-                    <li><a href="#portfolio">Our Portfolio</a></li>
-                    <li><a href="#team">Team</a></li>
-                    <li><a href="#blogs">Blog</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="{% url 'home:home' %}#services">Programs</a></li>
+                    <li><a href="{% url 'home:home' %}#portfolio">Our Portfolio</a></li>
+                    <li><a href="{% url 'home:home' %}#team">Team</a></li>
+                    <li><a href="{% url 'blog:blogs' %}">Blogs</a></li>
+                    <li><a href="{% url 'home:home' %}#contact">Contact</a></li>
                 </ul>
             </div>
 

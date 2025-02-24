@@ -65,7 +65,9 @@ class Feature(models.Model):
 
 
 class FeatureImage(models.Model):
-    feature = models.ForeignKey(Feature, on_delete=models.CASCADE)
+    feature = models.ForeignKey(
+        Feature, on_delete=models.CASCADE, related_name="feature_images"
+    )
     image = models.ImageField(upload_to="features/")
 
     def __str__(self):

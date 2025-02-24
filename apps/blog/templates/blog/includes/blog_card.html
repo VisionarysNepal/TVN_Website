@@ -1,8 +1,11 @@
 {% load tz %}
+{% load static %}
 <div class="col-xl-4 col-lg-6">
     <article>
         <div class="post-img">
-            <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="img-fluid">
+            {% with blog_image=blog.image %}
+                <img src="{% if blog_image %}{{ blog_image.url }}{% else %}{% static 'assets/img/blog_static.jpg' %}{% endif %}" alt="{{ blog.title }}" class="img-fluid" />
+            {% endwith %}
         </div>
 
         <p class="post-category">{{ blog.category.name }}</p>
@@ -12,11 +15,18 @@
         </h2>
 
         <div class="d-flex align-items-center">
-            <img src="{{ blog.author.profile.profile_image.url }}"
+            {% with author_image=blog.author.profile.profile_image %}
+            	<img src="{% if author_image %}{{ author_image.url }}{% else %}{% static 'assets/img/profile.svg' %}{% endif %}"
                  alt="{{ blog.author.first_name }} {{ blog.author.last_name }}"
                  class="img-fluid post-author-img flex-shrink-0">
+            {% endwith %}
+
             <div class="post-meta">
-                <p class="post-author">{{ blog.author.first_name }} {{ blog.author.last_name }}</p>
+                {% if blog.author.first_name %}
+                    <p class="post-author">{{ blog.author.first_name }} {{ blog.author.last_name }}</p>
+                {% else %}
+                    <p class="post-author">{{ blog.author.username }}</p>
+                {% endif %}
                 <p class="post-date">
                     <time datetime="2023-12-30">{{ blog.last_updated|timezone:"Asia/Kathmandu"|date }}</time>
                 </p>

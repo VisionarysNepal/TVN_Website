@@ -15,13 +15,19 @@ class SocialIcon(models.Model):
 
 class SocialLink(models.Model):
     link_url = models.URLField(max_length=255)
-    icon = models.ForeignKey(SocialIcon, on_delete=models.CASCADE)
+    icon = models.ForeignKey(
+        SocialIcon, on_delete=models.SET_NULL, null=True, related_name="social_icons"
+    )
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, null=True, blank=True, related_name="user"
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="user_socials",
     )
     member = models.ForeignKey(
         Member,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name="member_socials",
@@ -41,6 +47,7 @@ class WebsiteMeta(models.Model):
     ph_number = models.CharField(max_length=255, blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
     location = models.TextField(blank=True, null=True)
+    home_banner = models.ImageField(upload_to="home/r", blank=True, null=True)
 
     def __str__(self):
         return "Website Meta"

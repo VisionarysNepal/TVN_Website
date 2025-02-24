@@ -11,15 +11,22 @@ from apps.blog.models import Tag
 class Profile(models.Model):
     profile_image = models.ImageField(blank=True, null=True, upload_to="profiles/")
     bio = models.CharField(max_length=200)
-    social_link = models.ForeignKey(
-        "contact.SocialLink", on_delete=models.SET_NULL, null=True, blank=True
-    )
     member = models.OneToOneField(
         "team.Member", on_delete=models.SET_NULL, null=True, blank=True
     )
     author = models.OneToOneField(
         User, on_delete=models.SET_NULL, null=True, blank=True
     )
+    slug = models.SlugField(max_length=200, unique=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify("profile")
+            if self.member:
+                self.slug = slugify(self.member)
+            elif self.author:
+                self.slug = slugify(self.author)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         if self.member:
@@ -27,23 +34,26 @@ class Profile(models.Model):
         else:
             return f"{self.author}'s profile"
 
+    @property
+    def get_name(self):
+        if self.member:
+            return self.member.name
+        else:
+            if self.author.first_name:
+                return f"{self.author.first_name} {self.author.last_name}"
+            return self.author
+
 
 class Member(models.Model):
     name = models.CharField(max_length=255)
     designation = models.CharField(max_length=255)
     description = models.TextField()
-    slug = models.SlugField(max_length=255, unique=True, blank=True)
     cv = models.FileField(
         upload_to="members/cv/",
         validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
         null=True,
         blank=True,
     )
-
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.slug = slugify(self.name)
-        return super(Member, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.name}"
