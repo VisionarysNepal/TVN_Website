@@ -244,12 +244,12 @@
                             <li data-filter="*" class="filter-active">All</li>
 
                             {% for event in events %}
-                                <li data-filter=".filter-{{ event.location|lower }}">{{ event.location }}</li>
+                                <li data-filter=".filter-{{ event.location|slugify }}">{{ event.location }}</li>
                             {% endfor %}
                         </ul>
                         <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
                             {% for highlight in highlights %}
-                                <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-{{ highlight.event.location|lower }}">
+                                <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-{{ highlight.event.location|slugify }}">
                                     <img src="{{ highlight.image.url }}" class="img-fluid" alt="">
                                     <div class="portfolio-info">
                                         <h4>{{ highlight.title }}</h4>
