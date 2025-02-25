@@ -22,8 +22,10 @@ class HomePageView(TemplateView):
         programs = Program.objects.all()
         event_locations = Event.objects.values_list("location", flat=True).distinct()
         highlights = Highlight.objects.select_related("event")
-        members = Member.objects.select_related("profile").prefetch_related(
-            "member_socials__icon"
+        members = (
+            Member.objects.select_related("profile")
+            .prefetch_related("member_socials__icon")
+            .order_by("order")
         )
         feedbacks = Feedback.objects.all()
         features = (

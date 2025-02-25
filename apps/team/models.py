@@ -54,6 +54,7 @@ class Member(models.Model):
         null=True,
         blank=True,
     )
+    order = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.name}"

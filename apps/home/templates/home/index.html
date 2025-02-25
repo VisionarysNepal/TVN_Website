@@ -368,29 +368,10 @@
                 <div class="row gy-5">
                     {% for member in members %}
                         <div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="100">
-                            <div class="member-img">
+                            <div class="member-img" style="height: 256px; width: 256px;">
                                 {% with profile_img=member.profile.profile_image %}
-                                    <img src="
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                            {% if profile_img %}{{ profile_img.url }}{% else %}{% static 'assets/img/profile.svg' %}{% endif %}"
-                                         class="img-fluid" alt="{{ member.name }}"/>
+                                    <img src="{% if profile_img %}{{ profile_img.url }}{% else %}{% static 'assets/img/profile.svg' %}{% endif %}"
+                                         class="img-fluid object-fit-cover" alt="{{ member.name }}"/>
                                 {% endwith %}
 
                                 <div class="social">
