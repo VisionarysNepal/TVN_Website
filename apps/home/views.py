@@ -20,8 +20,8 @@ class HomePageView(TemplateView):
         collabs = Collab.objects.all()
         goals = Goal.objects.all()
         programs = Program.objects.all()
-        events = Event.objects.all()
-        highlights = Highlight.objects.all()
+        event_locations = Event.objects.values_list("location", flat=True).distinct()
+        highlights = Highlight.objects.select_related("event")
         members = Member.objects.select_related("profile").prefetch_related(
             "member_socials__icon"
         )
@@ -47,7 +47,7 @@ class HomePageView(TemplateView):
                 "goals": goals,
                 "programs": programs,
                 "features": features,
-                "events": events,
+                "event_locations": event_locations,
                 "highlights": highlights,
                 "members": members,
                 "feedbacks": feedbacks,

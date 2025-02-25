@@ -228,7 +228,7 @@
             </section>
         {% endif %}
 
-        {% if events %}
+        {% if highlights %}
             <section id="portfolio" class="portfolio">
                 <div class="container section-title" data-aos="fade-up">
                     <h2>Highlights</h2>
@@ -243,8 +243,8 @@
                         <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
                             <li data-filter="*" class="filter-active">All</li>
 
-                            {% for event in events %}
-                                <li data-filter=".filter-{{ event.location|slugify }}">{{ event.location }}</li>
+                            {% for location in event_locations %}
+                                <li data-filter=".filter-{{ location|slugify }}">{{ location }}</li>
                             {% endfor %}
                         </ul>
                         <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
