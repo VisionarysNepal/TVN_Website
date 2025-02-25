@@ -4,7 +4,9 @@
     <article>
         <div class="post-img">
             {% with blog_image=blog.image %}
-                <img src="{% if blog_image %}{{ blog_image.url }}{% else %}{% static 'assets/img/blog_static.jpg' %}{% endif %}" alt="{{ blog.title }}" class="img-fluid" />
+                <img src="
+                        {% if blog_image %}{{ blog_image.url }}{% else %}{% static 'assets/img/blog_static.jpg' %}{% endif %}"
+                     alt="{{ blog.title }}" class="img-fluid"/>
             {% endwith %}
         </div>
 
@@ -14,19 +16,16 @@
             <a href="{% url 'blog:blog_detail_page' blog.slug %}">{{ blog.title }}</a>
         </h2>
 
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center gap-1">
             {% with author_image=blog.author.profile.profile_image %}
-            	<img src="{% if author_image %}{{ author_image.url }}{% else %}{% static 'assets/img/profile.svg' %}{% endif %}"
-                 alt="{{ blog.author.first_name }} {{ blog.author.last_name }}"
-                 class="img-fluid post-author-img flex-shrink-0">
+                <img src="
+                        {% if author_image %}{{ author_image.url }}{% else %}{% static 'assets/img/profile.svg' %}{% endif %}"
+                     alt="{{ blog.get_author_name }}"
+                     class="img-fluid post-author-img flex-shrink-0">
             {% endwith %}
 
             <div class="post-meta">
-                {% if blog.author.first_name %}
-                    <p class="post-author">{{ blog.author.first_name }} {{ blog.author.last_name }}</p>
-                {% else %}
-                    <p class="post-author">{{ blog.author.username }}</p>
-                {% endif %}
+                <p class="post-author">{{ blog.get_author_name }}</p>
                 <p class="post-date">
                     <time datetime="2023-12-30">{{ blog.last_updated|timezone:"Asia/Kathmandu"|date }}</time>
                 </p>

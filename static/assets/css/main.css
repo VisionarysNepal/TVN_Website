@@ -1985,7 +1985,7 @@ section {
 .recent-posts .post-author-img {
     width: 50px;
     border-radius: 50%;
-    margin-right: 15px;
+    object-fit: contain;
 }
 
 .recent-posts .post-author {
