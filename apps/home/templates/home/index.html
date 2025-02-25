@@ -20,8 +20,19 @@
             object-position: center;
         }
 
-        .post-author-img {
+        .btn-primary-custom {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
 
+        .btn-primary-custom:hover {
+            background-color: transparent;
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary-custom:hover .spinner-border {
+            color: var(--primary-color) !important;
         }
     </style>
 {% endblock %}
@@ -57,21 +68,22 @@
                     </div>
                     <div class="col-lg-5 aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
                         {% if request.session.is_subscribed == None %}
-                            <form action="#" method="post" class="php-email-form">
+                            <form action="{% url 'home:home' %}" method="post" class="php-email-form"
+                                  id="subscribe_form">
                                 {% csrf_token %}
                                 <div class="sign-up-form">
                                     {{ subscribe_form.email }}
                                     <input name="form_type" type="hidden" value="newsletter"/>
-                                    <input type="submit" value="Subscribe">
+                                    <button type="submit" class="btn btn-primary btn-primary-custom">
+                                        <span class="text">Subscribe</span>
+                                        <div class="spinner-border text-light d-none" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </button>
                                 </div>
-                                <div class="loading">Loading</div>
                                 <div class="error-message"></div>
 
-                                {% if subscribe_message %}
-                                    <div class="sent-message" style="display:block">
-                                        Your subscription request has been sent. Thank you!
-                                    </div>
-                                {% endif %}
+                                <div class="sent-message"></div>
                             </form>
                         {% endif %}
                     </div>
@@ -359,6 +371,24 @@
                             <div class="member-img">
                                 {% with profile_img=member.profile.profile_image %}
                                     <img src="
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                             {% if profile_img %}{{ profile_img.url }}{% else %}{% static 'assets/img/profile.svg' %}{% endif %}"
                                          class="img-fluid" alt="{{ member.name }}"/>
                                 {% endwith %}
@@ -574,5 +604,171 @@
             e = d.getElementsByTagName(s)[0];
             e.parentNode.insertBefore(i, e);
         })();
+
+        const contact_form = document.querySelector("#contact-form");
+        const loading_div = contact_form.querySelector(".loading");
+        const error_div = contact_form.querySelector(".error-message");
+        const success_div = contact_form.querySelector(".sent-message");
+
+        async function onSubmit(token) {
+            loading_div.classList.add("d-block");
+            error_div.classList.remove("d-block");
+            success_div.classList.remove("d-block");
+
+            const fields = contact_form.querySelectorAll("input:not([type=hidden]), textarea");
+            let is_valid = true;
+
+            fields.forEach(field => {
+                let is_field_valid = field.value.trim() !== "";
+
+                if (field.type === "email") {
+                    is_field_valid = validate_email(field);
+                }
+
+                toggleValidationClass(field, is_field_valid);
+                if (!is_field_valid) {
+                    is_valid = false;
+                }
+            });
+
+            if (!is_valid) {
+                loading_div.classList.remove("d-block");
+                return;
+            }
+
+            const form_data = new FormData(contact_form);
+            form_data.append("g-recaptcha-response", token);
+
+            try {
+                const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+                const response = await fetch("/", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": csrfToken,
+                    },
+                    body: form_data
+                });
+
+                const data = await response.json();
+
+                loading_div.classList.remove("d-block");
+
+                if (response.ok) {
+                    success_div.innerHTML = data.message;
+                    success_div.classList.add("d-block");
+                    contact_form.reset();
+
+                    fields.forEach(field => {
+                        field.classList.remove("is-valid");
+                    });
+
+                    setTimeout(function () {
+                        success_div.classList.remove("d-block");
+                    }, 1500);
+                } else {
+                    error_div.innerHTML = data.error || "Unable to send message";
+                    error_div.classList.add("d-block");
+                    setTimeout(function () {
+                        error_div.classList.remove("d-block");
+                    }, 1500);
+                }
+            } catch (e) {
+                loading_div.classList.remove("d-block");
+                error_div.classList.add("d-block");
+                error_div.innerHTML = "Unable to send message. Please try again.";
+                setTimeout(function () {
+                    error_div.classList.remove("d-block");
+                }, 1500);
+                console.error(e);
+            }
+        }
+
+        const subscribe_form = document.querySelector("#subscribe_form");
+        subscribe_form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const email = subscribe_form.email;
+            const subscribeBtn = subscribe_form.querySelector("button.btn-primary-custom");
+            const sent_message = subscribe_form.querySelector(".sent-message");
+            const error_div = subscribe_form.querySelector(".error-message");
+            const signUpForm = subscribe_form.querySelector(".sign-up-form");
+
+            email.classList.remove("is-invalid");
+
+            let is_valid = email.value.trim() !== "" && validate_email(email);
+
+            if (!is_valid) {
+                email.classList.add("is-invalid");
+                return;
+            }
+
+            subscribeBtn.querySelector(".text").classList.add("d-none");
+            subscribeBtn.querySelector(".spinner-border").classList.remove("d-none");
+
+            const formData = new FormData(subscribe_form);
+            const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+
+
+            if (is_valid) {
+                subscribeBtn.querySelector(".text").classList.add("d-none");
+                subscribeBtn.querySelector(".spinner-border").classList.remove("d-none");
+
+                const formData = new FormData(subscribe_form);
+
+                sendSubscriptionRequest(subscribe_form.action, formData, csrfToken).then(data => {
+                    sent_message.innerHTML = data.message;
+                    sent_message.style.display = "block";
+                    if (signUpForm) signUpForm.classList.add("d-none");
+
+                    return delay(3000);
+                }).then(() => {
+                    sent_message.style.display = "none";
+                }).catch(error => {
+                    error_div.innerHTML = error.message;
+                    error_div.style.display = "block";
+
+                    return delay(3000);
+                }).then(() => {
+                    error_div.style.display = "none";
+                }).finally(() => {
+                    subscribeBtn.querySelector(".text").classList.remove("d-none");
+                    subscribeBtn.querySelector(".spinner-border").classList.add("d-none");
+                });
+
+            } else {
+                email.classList.add("is-invalid");
+            }
+        });
+
+        function sendSubscriptionRequest(url, formData, csrfToken) {
+            return fetch(url, {
+                headers: {"X-CSRFToken": csrfToken},
+                method: "POST",
+                body: formData
+            }).then(response => {
+                return response.json().then(data => {
+                    if (!response.ok) {
+                        throw new Error(data.error || "Error subscribing to newsletter");
+                    }
+                    return data;
+                });
+            });
+        }
+
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+
+        function toggleValidationClass(field, value) {
+            if (value) {
+                field.classList.add("is-valid");
+                field.classList.remove("is-invalid");
+            } else {
+                field.classList.add("is-invalid");
+                field.classList.remove("is-valid");
+            }
+        }
     </script>
 {% endblock %}

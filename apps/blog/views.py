@@ -114,21 +114,30 @@ class BlogDetailPageView(DetailView):
         return JsonResponse({"error": "Invalid Form", "status": "500"})
 
 
-def tag_page(request, slug):
-    tags = Tag.objects.exclude(slug=slug)
+class TagDetailView(DetailView):
+    model = Tag
+    template_name = "blog/tag_page.html"
 
-    tag = Tag.objects.get(slug=slug)
-    top_blogs = Blog.objects.filter(tags__in=[tag.id]).order_by("-view_count")[0:3]
-    recent_blogs = Blog.objects.filter(tags__in=[tag.id]).order_by("-last_updated")[0:3]
+    def get_object(self, queryset=None):
+        return get_object_or_404(Tag, slug=self.kwargs["slug"])
 
-    context = {
-        "tag": tag,
-        "top_blogs": top_blogs,
-        "recent_blogs": recent_blogs,
-        "tags": tags,
-    }
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        tags = Tag.objects.exclude(slug=self.kwargs["slug"])
+        tag = self.get_object()
+        blogs = Blog.objects.select_related("category", "author")
+        top_blogs = blogs.filter(tags__slug=tag.slug).order_by("-view_count")[:3]
+        recent_blogs = blogs.filter(tags__slug=tag.slug).order_by("-last_updated")[:3]
+        context.update(
+            {
+                "tag": tag,
+                "tags": tags,
+                "top_blogs": top_blogs,
+                "recent_blogs": recent_blogs,
+            }
+        )
 
-    return render(request, "blog/tag_page.html", context)
+        return context
 
 
 class BlogAuthorView(DetailView):
@@ -166,33 +175,45 @@ class BlogAuthorView(DetailView):
         return context
 
 
-def category_page(request, slug):
-    categories = Category.objects.exclude(slug=slug)
+class CategoryDetailView(DetailView):
+    model = Category
+    template_name = "blog/category_page.html"
 
-    category = Category.objects.get(slug=slug)
-    top_blogs = Blog.objects.filter(category__in=[category.id]).order_by("-view_count")[
-        0:3
-    ]
-    recent_blogs = Blog.objects.filter(category__in=[category.id]).order_by(
-        "-last_updated"
-    )[0:3]
+    def get_object(self, queryset=None):
+        return get_object_or_404(Category, slug=self.kwargs["slug"])
 
-    context = {
-        "category": category,
-        "top_blogs": top_blogs,
-        "recent_blogs": recent_blogs,
-        "categories": categories,
-    }
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category = self.get_object()
+        categories = Category.objects.exclude(slug=self.kwargs["slug"])
+        blogs = Blog.objects.select_related("author", "category")
+        top_blogs = blogs.filter(category=category).order_by("-view_count")[0:3]
+        recent_blogs = blogs.filter(category=category).order_by("-last_updated")[:3]
+        context.update(
+            {
+                "category": category,
+                "categories": categories,
+                "top_blogs": top_blogs,
+                "recent_blogs": recent_blogs,
+            }
+        )
+        return context
 
-    return render(request, "blog/category_page.html", context)
 
+class SearchView(TemplateView):
+    template_name = "blog/search.html"
 
-def search(request):
-    context = {}
-
-    if request.GET.get("search"):
-        query = request.GET.get("search")
-        blogs = Blog.objects.filter(title__icontains=query)
-        context = {"blogs": blogs, "query": query}
-
-    return render(request, "blog/search.html", context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        query = self.request.GET.get("search")
+        if query:
+            blogs = Blog.objects.select_related("author", "category").filter(
+                title__icontains=query
+            )
+            context.update(
+                {
+                    "blogs": blogs,
+                    "query": query,
+                }
+            )
+        return context

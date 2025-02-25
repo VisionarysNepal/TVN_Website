@@ -91,8 +91,8 @@ class HomePageView(TemplateView):
             if subscribe_form.is_valid:
                 subscribe_form.save()
                 subscribe_message = "Subscribed Successfully"
-                request.session["is_subscribed"] = True
+                # request.session["is_subscribed"] = True
                 return JsonResponse({"message": subscribe_message})
             else:
-                return JsonResponse({"error": "Validation Error"})
+                return JsonResponse({"error": "Validation Error, Try Again..."})
         return JsonResponse({"error": "Invalid Form Type"})
