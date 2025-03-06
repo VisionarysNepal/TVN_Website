@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home8/khesehan/easykaryalayas.com/
+    - export DEPLOYPATH=/home8/khesehan/thevisionarysnepal.com/
     - /bin/cp -R * $DEPLOYPATH
