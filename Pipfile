@@ -4,7 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "*"
 psycopg2-binary = "*"
 gunicorn = "*"
 django-ckeditor = "*"
@@ -13,6 +12,7 @@ whitenoise = "*"
 django-storages = {extras = ["boto3"], version = "*"}
 pillow = "*"
 requests = "*"
+django = "==4.0"
 
 [dev-packages]
 pre-commit = "*"
